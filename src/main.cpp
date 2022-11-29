@@ -38,9 +38,41 @@ void loop()
 
   currentColor = RgbColor(lastResult[0].toInt(), lastResult[1].toInt(), lastResult[2].toInt());
 
-  renderer.setPixel(xcoord, 0, currentColor);
-  renderer.setPixel(xcoord, 1, currentColor);
-  renderer.setPixel(xcoord, 2, currentColor);
+  // renderer.setPixel(xcoord, 0, currentColor);
+  // renderer.setPixel(xcoord, 1, currentColor);
+  // renderer.setPixel(xcoord, 2, currentColor);
+
+  RgbColor yellow(180, 180, 0);
+  RgbColor red(180, 0, 0);
+  RgbColor green(0, 180, 0);
+
+  // eyes
+  renderer.setPixel(1, 0, yellow);
+  renderer.setPixel(1, 2, yellow);
+
+  // nose
+  renderer.setPixel(2, 1, green);
+  renderer.setPixel(3, 1, green);
+
+  float s = sinf(framesSinceStart / 5.0);
+  // mouth close
+  if (s > 0.0)
+  {
+    renderer.setPixel(5, 0, red);
+    renderer.setPixel(5, 1, red);
+    renderer.setPixel(5, 2, red);
+  }
+  else
+  {
+    renderer.setPixel(5, 0, red);
+    renderer.setPixel(6, 1, red);
+    renderer.setPixel(4, 1, red);
+    renderer.setPixel(5, 2, red);
+  }
+  // mouth open
+
+  // renderer.setPixel(2, 1, yellow);
+  // renderer.setPixel(8, 1, yellow);
 
   xcoord += direction;
 
