@@ -1,7 +1,7 @@
 #include "renderer.h"
 #include "website.h"
 
-const int fps = 10;
+int fps = 10;
 RgbColor black(0);
 RgbColor bmBlue(0, 159, 223);
 RgbColor currentColor(bmBlue);
@@ -49,6 +49,7 @@ void loop()
     direction *= -1;
   }
 
+  fps = lastResult[3].toInt();
   renderer.render();
   delay(1000 / fps);
   framesSinceStart++;

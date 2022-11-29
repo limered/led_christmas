@@ -6,21 +6,27 @@ const char MAIN_page[] PROGMEM = R"=====(
 <html>
 <body>
 
-<h2>Circuits4you<h2>
-<h3> HTML Form ESP8266</h3>
+<h2>Rainbow Controller<h2>
 
-<form action="/action_page">
-  Red<br>
-  <input type="range" name="red" value="0" min="0" max="255">
-  <br>
-  Green<br>
-  <input type="range" name="green" value="0" min="0" max="255">
-  <br>
-  Blue<br>
-  <input type="range" name="blue" value="0" min="0" max="255">
-  <br>
-  <br>
-  <input type="submit" value="Submit">
+<form action="/action_page" style="fontSize: 50px">
+  Speed<br/>
+  <input type="range" name="speed" value="30" min="10" max="120" oninput="this.nextElementSibling.value = this.value" />
+  <output>10</output>
+  <br/>
+  Red<br />
+  <input type="range" name="red" value="0" min="0" max="255" oninput="this.nextElementSibling.value = this.value"/>
+  <output>10</output>
+  <br />
+  Green<br />
+  <input type="range" name="green" value="0" min="0" max="255" oninput="this.nextElementSibling.value = this.value"/>
+  <output>10</output>
+  <br />
+  Blue<br />
+  <input type="range" name="blue" value="0" min="0" max="255" oninput="this.nextElementSibling.value = this.value"/>
+  <output>10</output>
+  <br />
+  <br />
+  <input type="submit" value="Submit" />
 </form>
 
 </body>
@@ -45,13 +51,14 @@ void handle_NotFound()
   server.send(404, "text/plain", "Not found");
 }
 
-String lastResult[3];
+String lastResult[4]{"22", "0", "0", "30"};
 
 void handle_next()
 {
   lastResult[0] = server.arg("red");
   lastResult[1] = server.arg("green");
   lastResult[2] = server.arg("blue");
+  lastResult[3] = server.arg("speed");
 
   String s = "<a href='/' style=\"fontSize:50px\"> Go Back </a>";
   server.send(200, "text/html", s); // Send web page
