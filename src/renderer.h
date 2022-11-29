@@ -5,7 +5,7 @@ class Renderer
 {
   static const uint16_t pixelCount = 30;
   static const uint8_t pixelPin = 2;
-  float clearDegradation = 0.8;
+  float clearDegradation = 0.5;
   NeoPixelBus<NeoGrbwFeature, Neo800KbpsMethod> strip;
   RgbColor frameBuffer[pixelCount];
 

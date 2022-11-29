@@ -29,7 +29,7 @@
 // </html>
 // )=====";
 
-const int fps = 60;
+const int fps = 10;
 RgbColor black(0);
 RgbColor bmBlue(0, 159, 223);
 RgbColor currentColor(bmBlue);
@@ -98,16 +98,12 @@ void loop()
   renderer.setPixel(xcoord, 1, currentColor);
   renderer.setPixel(xcoord, 2, currentColor);
 
-  xcoord = (xcoord + 1) % renderer.frameWidth;
+  xcoord += direction;
 
-  // if (xcoord >= renderer.frameWidth)
-  // {
-  //   direction = -1;
-  // }
-  // else if (xcoord <= 0)
-  // {
-  //   direction = 1;
-  // }
+  if (xcoord >= renderer.frameWidth - 1 || xcoord <= 0)
+  {
+    direction *= -1;
+  }
 
   renderer.render();
   delay(1000 / fps);
