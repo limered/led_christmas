@@ -74,6 +74,8 @@ public:
 
   void setPixel(int x, int y, RgbColor col)
   {
+    x = x % frameWidth;
+    y = y % frameHeight;
     if (y % 2 == 1)
     {
       x = frameWidth - x - 1;
@@ -87,8 +89,8 @@ public:
   {
     for (size_t i = 0; i < size; i++)
     {
-      uint8_t x = (coord[i].x + position.x) % frameWidth;
-      uint8_t y = (coord[i].y + position.y) % frameHeight;
+      uint8_t x = coord[i].x + position.x;
+      uint8_t y = coord[i].y + position.y;
       setPixel(x, y, color);
     }
   }

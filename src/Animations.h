@@ -57,6 +57,17 @@ void nextColor()
   pColors = (pColors + 1) % 6;
 }
 
+HslColor hueShiftColor(0, 1.0, 0.3);
+float hueShiftSpeed = 0.1;
+void ShiftHue()
+{
+  hueShiftColor.H += hueShiftSpeed;
+  if (hueShiftColor.H >= 1.0)
+  {
+    hueShiftColor.H = 0;
+  }
+}
+
 /////////////////////////////////
 // PartyLine
 ////////////////////////////////
@@ -203,25 +214,53 @@ float lightsColors = 0;
 void Tannenbaum(Renderer *renderer)
 {
   renderer->draw(tree, 52, Coord(0, 0), darkGreen);
-  lightsColors = sinf(renderer->framesSinceStart / 15.0);
-  if (lightsColors < -0.5)
+}
+
+void TannenbaumLights(Renderer *renderer)
+{
+  HslColor lineCol = HslColor(hueShiftColor);
+  HslColor line2Col = HslColor(hueShiftColor);
+  line2Col.H += 0.5;
+  renderer->draw(lights, 8, Coord(0, 0), lineCol);
+  renderer->draw(lights2, 8, Coord(0, 0), line2Col);
+}
+
+///////////////////////////
+// HslBlock
+//////////////////////////
+
+float blockX = 1.0f;
+float blockY = 3.0f;
+float dirX = 0.3f;
+float dirY = 0.12f;
+uint8_t blockSize = 2;
+
+void HslBlock(Renderer *renderer)
+{
+  for (size_t x = 0; x < blockSize; x++)
   {
-    renderer->draw(lights, 8, Coord(0, 0), yellow);
-    renderer->draw(lights2, 8, Coord(0, 0), blue);
+    for (size_t y = 0; y < blockSize; y++)
+    {
+      renderer->setPixel(x + blockX, y + blockY, hueShiftColor);
+    }
   }
-  else if (lightsColors < 0)
+  // animate
+  if (blockX + blockSize >= renderer->frameWidth)
   {
-    renderer->draw(lights, 8, Coord(0, 0), red);
-    renderer->draw(lights2, 8, Coord(0, 0), cyan);
+    dirX *= -1;
   }
-  else if (lightsColors < 0.5)
+  if (blockY + blockSize >= renderer->frameHeight)
   {
-    renderer->draw(lights, 8, Coord(0, 0), red);
-    renderer->draw(lights2, 8, Coord(0, 0), blue);
+    dirY *= -1;
   }
-  else
+  if (blockX <= 0)
   {
-    renderer->draw(lights, 8, Coord(0, 0), yellow);
-    renderer->draw(lights2, 8, Coord(0, 0), cyan);
+    dirX *= -1;
   }
+  if (blockY <= 0)
+  {
+    dirY *= -1;
+  }
+  blockX += dirX;
+  blockY += dirY;
 }

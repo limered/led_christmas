@@ -27,20 +27,37 @@ void setup()
   renderer.clear(black);
 }
 
-uint8_t ycoord = 0;
-uint8_t xcoord = 0;
-int direction = 1;
-
 void loop()
 {
   server.handleClient();
   renderer.clearDegradation = lastResult[1].toFloat();
   renderer.clear(black);
 
-  Tannenbaum(&renderer);
+  if (lastResult[3] == "partyline")
+  {
+    PartyLine(&renderer);
+  }
+  if (lastResult[4] == "tannenbaum")
+  {
+    Tannenbaum(&renderer);
+  }
+  if (lastResult[5] == "litbaum")
+  {
+    TannenbaumLights(&renderer);
+  }
+  if (lastResult[6] == "screensaver")
+  {
+    HslBlock(&renderer);
+    // TODO change size
+  }
+
+  // BigBlock(&renderer);
 
   fps = lastResult[0].toInt();
   renderer.render();
   delay(1000 / fps);
   renderer.framesSinceStart++;
+
+  hueShiftSpeed = lastResult[2].toFloat();
+  ShiftHue();
 }
