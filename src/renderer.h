@@ -1,12 +1,26 @@
 #include "Arduino.h"
 #include <NeoPixelBus.h>
 
+struct Coord
+{
+  uint8_t x;
+  uint8_t y;
+
+  Coord(uint8_t _x, uint8_t _y)
+  {
+    x = _x;
+    y = _y;
+  }
+};
+
 class Renderer
 {
-  static const uint16_t pixelCount = 30;
+  static const uint16_t pixelCount = 100;
   static const uint8_t pixelPin = 2;
-  float clearDegradation = 0.5;
-  NeoPixelBus<NeoGrbwFeature, Neo800KbpsMethod> strip;
+  uint8_t saveLightValue = 7;
+  float savePercent = 0.03;
+  bool saveMode = false;
+  NeoPixelBus<NeoGrbFeature, Neo800KbpsMethod> strip;
   RgbColor frameBuffer[pixelCount];
 
 public:
@@ -19,6 +33,8 @@ public:
 
   uint8_t frameWidth;
   uint8_t frameHeight;
+  float clearDegradation = 0.7;
+  u_int framesSinceStart = 0;
 
   void init()
   {
@@ -43,7 +59,15 @@ public:
   {
     for (size_t i = 0; i < pixelCount; i++)
     {
-      strip.SetPixelColor(i, frameBuffer[i]);
+      if (saveMode)
+      {
+        auto r = frameBuffer[i].R * savePercent;
+        auto g = frameBuffer[i].G * savePercent;
+        auto b = frameBuffer[i].B * savePercent;
+        strip.SetPixelColor(i, RgbColor(r, g, b));
+      }
+      else
+        strip.SetPixelColor(i, frameBuffer[i]);
     }
     strip.Show();
   }
@@ -57,6 +81,16 @@ public:
 
     int index = y * frameWidth + x;
     frameBuffer[index] = col;
+  }
+
+  void draw(Coord *coord, uint8_t size, Coord position, RgbColor color)
+  {
+    for (size_t i = 0; i < size; i++)
+    {
+      uint8_t x = (coord[i].x + position.x) % frameWidth;
+      uint8_t y = (coord[i].y + position.y) % frameHeight;
+      setPixel(x, y, color);
+    }
   }
 
   static RgbColor randomColor()
