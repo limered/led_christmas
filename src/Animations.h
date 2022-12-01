@@ -33,6 +33,7 @@ Coord hLine[10] = {
 // Color
 //////////
 uint8_t maxC = 80;
+float maxL = 0.3f;
 
 RgbColor green(0, maxC, 0);
 RgbColor red(maxC, 0, 0);
@@ -59,6 +60,7 @@ void nextColor()
 
 HslColor hueShiftColor(0, 1.0, 0.3);
 float hueShiftSpeed = 0.1;
+bool useHsl = false;
 void ShiftHue()
 {
   hueShiftColor.H += hueShiftSpeed;
@@ -78,9 +80,10 @@ void nextLineMode()
 }
 void PartyLine(Renderer *renderer)
 {
+  HslColor col = useHsl ? hueShiftColor : HslColor(colors[pColors]);
   if (lineMode == 0)
   {
-    renderer->draw(hLine, 10, Coord(0, posY), colors[pColors]);
+    renderer->draw(hLine, 10, Coord(0, posY), col);
     posY++;
     if (posY >= renderer->frameHeight - 1)
     {
@@ -90,7 +93,7 @@ void PartyLine(Renderer *renderer)
   }
   else if (lineMode == 1)
   {
-    renderer->draw(vLine, 10, Coord(posX, 0), colors[pColors]);
+    renderer->draw(vLine, 10, Coord(posX, 0), col);
     posX++;
     if (posX >= renderer->frameWidth - 1)
     {
@@ -100,7 +103,7 @@ void PartyLine(Renderer *renderer)
   }
   else if (lineMode == 2)
   {
-    renderer->draw(hLine, 10, Coord(0, posY), colors[pColors]);
+    renderer->draw(hLine, 10, Coord(0, posY), col);
     posY--;
     if (posY <= 0)
     {
@@ -110,7 +113,7 @@ void PartyLine(Renderer *renderer)
   }
   else if (lineMode == 3)
   {
-    renderer->draw(vLine, 10, Coord(posX, 0), colors[pColors]);
+    renderer->draw(vLine, 10, Coord(posX, 0), col);
     posX--;
     if (posX <= 0)
     {
@@ -218,12 +221,22 @@ void Tannenbaum(Renderer *renderer)
 
 void TannenbaumLights(Renderer *renderer)
 {
-  HslColor lineCol = HslColor(hueShiftColor);
-  HslColor line2Col = HslColor(hueShiftColor);
+  HslColor lineCol = useHsl ? hueShiftColor : HslColor(red);
+  HslColor line2Col = useHsl ? hueShiftColor : HslColor(red);
+
   line2Col.H += 0.5;
   renderer->draw(lights, 8, Coord(0, 0), lineCol);
   renderer->draw(lights2, 8, Coord(0, 0), line2Col);
 }
+
+///////////////////////////
+// Heart
+///////////////////////////
+Coord heart[] = {Coord(2, 0),
+                 Coord(1, 1), Coord(2, 1), Coord(3, 1),
+                 Coord(0, 2), Coord(1, 2), Coord(2, 2), Coord(3, 2), Coord(4, 2),
+                 Coord(0, 3), Coord(1, 3), Coord(2, 3), Coord(3, 3), Coord(4, 3),
+                 Coord(1, 4), Coord(3, 4)};
 
 ///////////////////////////
 // HslBlock
@@ -237,12 +250,21 @@ uint8_t blockSize = 2;
 
 void HslBlock(Renderer *renderer)
 {
-  for (size_t x = 0; x < blockSize; x++)
+  if (useHsl)
   {
-    for (size_t y = 0; y < blockSize; y++)
+    blockSize = 2;
+    for (size_t x = 0; x < blockSize; x++)
     {
-      renderer->setPixel(x + blockX, y + blockY, hueShiftColor);
+      for (size_t y = 0; y < blockSize; y++)
+      {
+        renderer->setPixel(x + blockX, y + blockY, hueShiftColor);
+      }
     }
+  }
+  else
+  {
+    blockSize = 5;
+    renderer->draw(heart, 16, Coord(blockX, blockY), red);
   }
   // animate
   if (blockX + blockSize >= renderer->frameWidth)
@@ -263,4 +285,16 @@ void HslBlock(Renderer *renderer)
   }
   blockX += dirX;
   blockY += dirY;
+}
+
+////////////////////////////////
+// Sparcle
+///////////////////////////////
+
+void Sparkle(Renderer *renderer)
+{
+  uint8_t x = random(renderer->frameWidth);
+  uint8_t y = random(renderer->frameHeight);
+  auto color = useHsl ? hueShiftColor : HslColor(0, 0, maxL);
+  renderer->setPixel(x, y, color);
 }

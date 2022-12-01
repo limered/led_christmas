@@ -37,15 +37,19 @@ void loop()
   {
     PartyLine(&renderer);
   }
-  if (lastResult[4] == "tannenbaum")
+  if (lastResult[4] == "sparkle")
+  {
+    Sparkle(&renderer);
+  }
+  if (lastResult[5] == "tannenbaum")
   {
     Tannenbaum(&renderer);
   }
-  if (lastResult[5] == "litbaum")
+  if (lastResult[6] == "litbaum")
   {
     TannenbaumLights(&renderer);
   }
-  if (lastResult[6] == "screensaver")
+  if (lastResult[7] == "screensaver")
   {
     HslBlock(&renderer);
     // TODO change size
@@ -58,6 +62,7 @@ void loop()
   delay(1000 / fps);
   renderer.framesSinceStart++;
 
+  useHsl = lastResult[8] == "usehsl";
   hueShiftSpeed = lastResult[2].toFloat();
   ShiftHue();
 }
