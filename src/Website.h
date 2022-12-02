@@ -17,15 +17,19 @@ const char MAIN_page[] PROGMEM = R"=====(
   <input type="range" name="fade" step="0.1" value="0.7" min="0.0" max="0.9" oninput="this.nextElementSibling.value = this.value"/>
   <output>0.7</output>
   <br />
-  <input type="checkbox" id="usehsl" name="usehsl" value="usehsl">
-  <label for="usehsl">Use Hue Shift</label><br/>
   Hue Speed<br />
   <input type="range" name="hue" step="0.01" value="0.01" min="0.0" max="0.6" oninput="this.nextElementSibling.value = this.value"/>
   <output>0.01</output>
   <br />
+  <input type="checkbox" id="usehsl" name="usehsl" value="usehsl">
+  <label for="usehsl">Special Mode</label><br/>
   <h3>Animations:</h3>
   <input type="checkbox" id="partyline" name="partyline" value="partyline">
   <label for="partyline">Partyline</label><br>
+  <input type="checkbox" id="circle" name="circle" value="circle">
+  <label for="circle">Spinner</label><br>
+  <input type="checkbox" id="tunnel" name="tunnel" value="tunnel">
+  <label for="tunnel">Tunnel</label><br>
   <input type="checkbox" id="sparkle" name="sparkle" value="sparkle">
   <label for="sparkle">Sparkle</label><br>
   <input type="checkbox" id="tannenbaum" name="tannenbaum" value="tannenbaum">
@@ -34,6 +38,14 @@ const char MAIN_page[] PROGMEM = R"=====(
   <label for="litbaum">+ Lichter</label><br>
   <input type="checkbox" id="screensaver" name="screensaver" value="screensaver">
   <label for="screensaver">Screensaver</label><br>
+  <input type="checkbox" id="runner" name="runner" value="runner">
+  <label for="runner">Runner</label><br>
+  <input type="checkbox" id="star" name="star" value="star">
+  <label for="star">Star</label><br>
+  <input type="checkbox" id="bmlogo" name="bmlogo" value="bmlogo">
+  <label for="bmlogo">BM Logo</label><br>
+  <input type="checkbox" id="bigheart" name="bigheart" value="bigheart">
+  <label for="bigheart">Heart</label><br>
   <br />
   <input type="submit" value="Submit" />
 </form>
@@ -60,9 +72,10 @@ void handle_NotFound()
   server.send(404, "text/plain", "Not found");
 }
 
-String lastResult[9]{"45", "0.0", "0.01",
-                     "partyline_off", "sparkle_off", "tannenbaum_off", "litbaum_off",
-                     "screensaver", "usehsl_off"};
+String lastResult[]{"45", "0.0", "0.01",
+                    "partyline_off", "sparkle_off", "tannenbaum_off", "litbaum_off",
+                    "screensaver_off", "usehsl_off", "bmlogo_off", "star_off", "bigheart_off",
+                    "circle_off", "runner_off", "tunnel_off"};
 
 void handle_next()
 {
@@ -75,6 +88,12 @@ void handle_next()
   lastResult[5] = server.arg("tannenbaum");
   lastResult[6] = server.arg("litbaum");
   lastResult[7] = server.arg("screensaver");
+  lastResult[9] = server.arg("bmlogo");
+  lastResult[10] = server.arg("star");
+  lastResult[11] = server.arg("bigheart");
+  lastResult[12] = server.arg("circle");
+  lastResult[13] = server.arg("runner");
+  lastResult[14] = server.arg("tunnel");
 
   String s = "<a href='/' style=\"fontSize:50px\"> Go Back </a>";
   server.send(200, "text/html", s); // Send web page

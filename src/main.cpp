@@ -3,8 +3,6 @@
 
 uint8_t fps = 30;
 RgbColor black(0);
-RgbColor bmBlue(0, 159, 223);
-RgbColor currentColor(bmBlue);
 Renderer renderer(10, 10);
 
 void setup()
@@ -31,11 +29,19 @@ void loop()
 {
   server.handleClient();
   renderer.clearDegradation = lastResult[1].toFloat();
-  renderer.clear(black);
+  renderer.clear();
 
   if (lastResult[3] == "partyline")
   {
     PartyLine(&renderer);
+  }
+  if (lastResult[12] == "circle")
+  {
+    Circle(&renderer);
+  }
+  if (lastResult[14] == "tunnel")
+  {
+    Tunnel(&renderer);
   }
   if (lastResult[4] == "sparkle")
   {
@@ -52,10 +58,23 @@ void loop()
   if (lastResult[7] == "screensaver")
   {
     HslBlock(&renderer);
-    // TODO change size
   }
-
-  // BigBlock(&renderer);
+  if (lastResult[13] == "runner")
+  {
+    Runner(&renderer);
+  }
+  if (lastResult[10] == "star")
+  {
+    Star(&renderer);
+  }
+  if (lastResult[9] == "bmlogo")
+  {
+    BmLogo(&renderer);
+  }
+  if (lastResult[11] == "bigheart")
+  {
+    BigHeart(&renderer);
+  }
 
   fps = lastResult[0].toInt();
   renderer.render();

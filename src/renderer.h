@@ -3,8 +3,8 @@
 
 struct Coord
 {
-  uint8_t x;
-  uint8_t y;
+  int8_t x;
+  int8_t y;
 
   Coord(uint8_t _x, uint8_t _y)
   {
@@ -42,17 +42,23 @@ public:
     strip.Show();
   }
 
-  void clear(RgbColor col)
+  void clear()
   {
     for (size_t i = 0; i < pixelCount; i++)
     {
-      strip.SetPixelColor(i, col);
       int r = frameBuffer[i].R * clearDegradation;
       int g = frameBuffer[i].G * clearDegradation;
       int b = frameBuffer[i].B * clearDegradation;
       frameBuffer[i] = RgbColor(r, g, b);
     }
-    strip.Show();
+  }
+
+  void clear(RgbColor col)
+  {
+    for (size_t i = 0; i < pixelCount; i++)
+    {
+      frameBuffer[i] = col;
+    }
   }
 
   void render()
@@ -72,16 +78,16 @@ public:
     strip.Show();
   }
 
-  void setPixel(int x, int y, RgbColor col)
+  void setPixel(int _x, int _y, RgbColor col)
   {
-    x = x % frameWidth;
-    y = y % frameHeight;
+    uint8_t x = min(max(_x, 0), (int)frameWidth);
+    uint8_t y = min(max(_y, 0), (int)frameHeight);
     if (y % 2 == 1)
     {
       x = frameWidth - x - 1;
     }
 
-    int index = y * frameWidth + x;
+    uint8_t index = y * frameWidth + x;
     frameBuffer[index] = col;
   }
 
