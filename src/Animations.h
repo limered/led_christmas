@@ -59,7 +59,7 @@ void nextColor()
   pColors = (pColors + 1) % 6;
 }
 
-HslColor hueShiftColor(0, 1.0, 0.3);
+HslColor hueShiftColor(0, 1.0, 0.5);
 float hueShiftSpeed = 0.1;
 bool useHsl = false;
 void ShiftHue()
@@ -268,21 +268,25 @@ void HslBlock(Renderer *renderer)
     renderer->draw(heart, 16, Coord(blockX, blockY), red);
   }
   // animate
-  if (blockX + blockSize >= renderer->frameWidth)
+  if (blockX + blockSize > renderer->frameWidth)
   {
     dirX *= -1;
+    blockX = renderer->frameWidth - blockSize - 1;
   }
-  if (blockY + blockSize >= renderer->frameHeight)
+  if (blockY + blockSize > renderer->frameHeight)
   {
     dirY *= -1;
+    blockY = renderer->frameHeight - blockSize - 1;
   }
   if (blockX <= 0)
   {
     dirX *= -1;
+    blockX = 0;
   }
   if (blockY <= 0)
   {
     dirY *= -1;
+    blockY = 0;
   }
   blockX += dirX;
   blockY += dirY;
@@ -388,10 +392,11 @@ void BigHeart(Renderer *renderer)
 Coord candy[] = {Coord(0, 0), Coord(0, 1), Coord(-1, 1), Coord(-1, 2), Coord(0, 3), Coord(0, 4),
                  Coord(1, 4)};
 
-float halfPi = PI * 0.5f;
-float quaterPi = PI * 0.25f;
-float sinHalfPi = sinf(halfPi);
-float cosHalfPi = cosf(halfPi);
+const float TAU = 2 * PI;
+const float thirdTau = TAU * 0.33f;
+const float sixthTau = thirdTau * 0.5f;
+float sinThirdTau = sinf(thirdTau);
+float cosThirdTau = cosf(thirdTau);
 
 void Circle(Renderer *renderer)
 {
@@ -407,21 +412,17 @@ void Circle(Renderer *renderer)
 
   for (size_t i = 0; i < 7; i++)
   {
-    auto rotX = candy[i].x * cosf(theta + quaterPi) - candy[i].y * sinf(theta + quaterPi);
-    auto rotY = candy[i].x * sinf(theta + quaterPi) + candy[i].y * cosf(theta + quaterPi);
+    auto rotX = candy[i].x * cosf(theta + sixthTau) - candy[i].y * sinf(theta + sixthTau);
+    auto rotY = candy[i].x * sinf(theta + sixthTau) + candy[i].y * cosf(theta + sixthTau);
     renderer->setPixel(rotX + c.x, rotY + c.y, colA);
 
-    auto rotX2 = rotX * cosHalfPi - rotY * sinHalfPi;
-    auto rotY2 = rotX * sinHalfPi + rotY * cosHalfPi;
+    auto rotX2 = rotX * cosThirdTau - rotY * sinThirdTau;
+    auto rotY2 = rotX * sinThirdTau + rotY * cosThirdTau;
     renderer->setPixel(rotX2 + c.x, rotY2 + c.y, colA);
 
-    rotX = rotX2 * cosHalfPi - rotY2 * sinHalfPi;
-    rotY = rotX2 * sinHalfPi + rotY2 * cosHalfPi;
+    rotX = rotX2 * cosThirdTau - rotY2 * sinThirdTau;
+    rotY = rotX2 * sinThirdTau + rotY2 * cosThirdTau;
     renderer->setPixel(rotX + c.x, rotY + c.y, colA);
-
-    rotX2 = rotX * cosHalfPi - rotY * sinHalfPi;
-    rotY2 = rotX * sinHalfPi + rotY * cosHalfPi;
-    renderer->setPixel(rotX2 + c.x, rotY2 + c.y, colA);
   }
   for (size_t i = 0; i < 7; i++)
   {
@@ -429,17 +430,13 @@ void Circle(Renderer *renderer)
     auto rotY = candy[i].x * sinf(theta) + candy[i].y * cosf(theta);
     renderer->setPixel(rotX + c.x, rotY + c.y, colB);
 
-    auto rotX2 = rotX * cosHalfPi - rotY * sinHalfPi;
-    auto rotY2 = rotX * sinHalfPi + rotY * cosHalfPi;
+    auto rotX2 = rotX * cosThirdTau - rotY * sinThirdTau;
+    auto rotY2 = rotX * sinThirdTau + rotY * cosThirdTau;
     renderer->setPixel(rotX2 + c.x, rotY2 + c.y, colB);
 
-    rotX = rotX2 * cosHalfPi - rotY2 * sinHalfPi;
-    rotY = rotX2 * sinHalfPi + rotY2 * cosHalfPi;
+    rotX = rotX2 * cosThirdTau - rotY2 * sinThirdTau;
+    rotY = rotX2 * sinThirdTau + rotY2 * cosThirdTau;
     renderer->setPixel(rotX + c.x, rotY + c.y, colB);
-
-    rotX2 = rotX * cosHalfPi - rotY * sinHalfPi;
-    rotY2 = rotX * sinHalfPi + rotY * cosHalfPi;
-    renderer->setPixel(rotX2 + c.x, rotY2 + c.y, colB);
   }
 }
 
@@ -486,8 +483,8 @@ void Tunnel(Renderer *renderer)
     auto y = tunnel[i].y * s;
     if (useHsl)
     {
-      float rotX = x * cosf(theta * 6.29f) - y * sinf(theta * 6.29f);
-      float rotY = x * sinf(theta * 6.29f) + y * cosf(theta * 6.29f);
+      float rotX = x * cosf(theta * TAU) - y * sinf(theta * TAU);
+      float rotY = x * sinf(theta * TAU) + y * cosf(theta * TAU);
       renderer->setPixel(rotX + cx, rotY + cy, hueShiftColor);
     }
     else
@@ -504,8 +501,8 @@ void Tunnel(Renderer *renderer)
     auto y = -tunnel[i].x * s;
     if (useHsl)
     {
-      float rotX = x * cosf(theta * 6.29f) - y * sinf(theta * 6.29f);
-      float rotY = x * sinf(theta * 6.29f) + y * cosf(theta * 6.29f);
+      float rotX = x * cosf(theta * TAU) - y * sinf(theta * TAU);
+      float rotY = x * sinf(theta * TAU) + y * cosf(theta * TAU);
       renderer->setPixel(rotX + cx, rotY + cy, hueShiftColor);
     }
     else
@@ -517,4 +514,160 @@ void Tunnel(Renderer *renderer)
   {
     nextColor();
   }
+}
+
+////////////////////////////////////
+// Ants
+////////////////////////////////////
+struct Ant
+{
+  float x;
+  float y;
+  float dx;
+  float dy;
+  float ax;
+  float ay;
+  float speed;
+  Ant(Coord p, Coord d, float s)
+  {
+    x = p.x;
+    y = p.y;
+    dx = d.x;
+    dy = d.y;
+    speed = s;
+  };
+};
+
+Ant antA(Coord(2, 2), Coord(1, 0), 0.01f);
+Ant antB(Coord(7, 2), Coord(0, 1), 0.05f);
+Ant antC(Coord(7, 7), Coord(-1, 0), 0.04f);
+Ant antD(Coord(2, 7), Coord(0, -1), 0.076f);
+
+float Len(float x, float y)
+{
+  return sqrtf(x * x + y * y);
+};
+const float maxAntSpeed = 0.5f;
+void UpdateAnt(Ant *ant, Renderer *renderer)
+{
+  ant->x += ant->dx;
+  ant->y += ant->dy;
+
+  ant->dx += ant->ax * ant->speed;
+  ant->dy += ant->ay * ant->speed;
+
+  ant->dx = min(ant->dx, maxAntSpeed);
+  ant->dy = min(ant->dy, maxAntSpeed);
+
+  ant->ax = random(11) * 0.2f - 1.0f;
+  ant->ay = random(11) * 0.2f - 1.0f;
+
+  if (ant->x < -4)
+  {
+    ant->x = -4;
+    ant->dx *= -1;
+  }
+  if (ant->y < -4)
+  {
+    ant->y = -4;
+    ant->dy *= -1;
+  }
+  if (ant->x > 4)
+  {
+    ant->x = 4;
+    ant->dx *= -1;
+  }
+  if (ant->y > 4)
+  {
+    ant->y = 4;
+    ant->dy *= -1;
+  }
+}
+
+const Coord antCenter(4, 4);
+void Ants(Renderer *renderer)
+{
+
+  UpdateAnt(&antA, renderer);
+  UpdateAnt(&antB, renderer);
+  UpdateAnt(&antC, renderer);
+  UpdateAnt(&antD, renderer);
+
+  renderer->setPixel(antA.x + antCenter.x, antA.y + antCenter.y, (useHsl) ? RgbColor(hueShiftColor) : red);
+  renderer->setPixel(antB.x + antCenter.x, antB.y + antCenter.y, (useHsl) ? RgbColor(hueShiftColor) : green);
+  renderer->setPixel(antC.x + antCenter.x, antC.y + antCenter.y, (useHsl) ? RgbColor(hueShiftColor) : blue);
+  renderer->setPixel(antD.x + antCenter.x, antD.y + antCenter.y, (useHsl) ? RgbColor(hueShiftColor) : yellow);
+}
+
+//////////////////////////
+// Rain
+//////////////////////////
+uint8_t rainYs[] = {10, 10, 10, 10, 10, 10, 10, 10, 10, 10};
+
+void RainOnMe(Renderer *renderer)
+{
+  uint8_t p = random(10);
+  rainYs[p] = rainYs[p] - 1 < 0 ? 10 : rainYs[p] - 1;
+  HslColor col(white);
+  for (size_t i = 0; i < 10; i++)
+  {
+    if (rainYs[i] < 10 && rainYs[i] > -1)
+    {
+      if (useHsl)
+      {
+        col = HslColor(hueShiftColor);
+        col.H += i / 50.0f;
+      }
+      renderer->setPixel(i, rainYs[i], col);
+    }
+  }
+}
+
+////////////////////////
+// Starfield
+////////////////////////
+
+struct CoordF
+{
+  float x;
+  float y;
+  CoordF(float _x, float _y)
+  {
+    x = _x;
+    y = _y;
+  }
+};
+
+CoordF stars[] = {CoordF(1, 1), CoordF(2, 2), CoordF(4, 2), CoordF(5, 1), CoordF(5, 7),
+                  CoordF(-3, 3), CoordF(-2, 4), CoordF(0, -1), CoordF(-2, 3), CoordF(7, 3),
+                  CoordF(-2, -4), CoordF(-2, -1), CoordF(-2, 4), CoordF(2, -3), CoordF(1, -1)};
+CoordF starDirs[] = {CoordF(0.53, 1.32), CoordF(-1.09, 0.90), CoordF(-1.18, -0.77), CoordF(0.36, -1.26), CoordF(1.31, -0.07),
+                     CoordF(0.07, 1.41), CoordF(-1.36, 0.40), CoordF(-0.55, -1.18), CoordF(0.88, -1.15), CoordF(1.32, 0.51),
+                     CoordF(-0.62, 1.26), CoordF(-1.39, -0.22), CoordF(-0.22, -1.30), CoordF(1.26, -0.64), CoordF(1, 0.9)};
+
+const CoordF starCenter(4.5, 4.5);
+uint8_t pStars = 0;
+
+void Starfield(Renderer *renderer)
+{
+  // reset
+  auto star = &stars[pStars];
+  if (abs(star->x) > 5 || abs(star->y) > 5)
+  {
+    star->x = 0;
+    star->y = 0;
+  }
+
+  // animate
+  star->x += starDirs[pStars].x * 0.6f;
+  star->y += starDirs[pStars].y * 0.6f;
+
+  for (size_t i = 0; i < 15; i++)
+  {
+    auto col = (useHsl) ? HslColor(hueShiftColor) : HslColor(white);
+    col.L = i * 0.01f + 1.5f;
+    renderer->setPixel(stars[i].x + starCenter.x, stars[i].y + starCenter.y, col);
+  }
+
+  pStars = (pStars + 4) % 15;
 }

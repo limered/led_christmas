@@ -5,12 +5,27 @@ struct Coord
 {
   int8_t x;
   int8_t y;
-
+  Coord()
+  {
+    x = 0;
+    y = 0;
+  }
   Coord(uint8_t _x, uint8_t _y)
   {
     x = _x;
     y = _y;
-  }
+  };
+  void Normalize()
+  {
+    float len = sqrtf(x * x + y * y);
+    x /= len;
+    y /= len;
+  };
+  void Scale(float s)
+  {
+    x *= s;
+    y *= s;
+  };
 };
 
 class Renderer
@@ -78,10 +93,13 @@ public:
     strip.Show();
   }
 
-  void setPixel(int _x, int _y, RgbColor col)
+  void setPixel(int x, int y, RgbColor col)
   {
-    uint8_t x = min(max(_x, 0), (int)frameWidth);
-    uint8_t y = min(max(_y, 0), (int)frameHeight);
+    if (x < 0 || x > frameWidth - 1 || y < 0 || y > frameHeight - 1)
+    {
+      return;
+    }
+
     if (y % 2 == 1)
     {
       x = frameWidth - x - 1;

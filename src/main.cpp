@@ -75,6 +75,18 @@ void loop()
   {
     BigHeart(&renderer);
   }
+  if (lastResult[15] == "ants")
+  {
+    Ants(&renderer);
+  }
+  if (lastResult[16] == "rain")
+  {
+    RainOnMe(&renderer);
+  }
+  if (lastResult[17] == "starfield")
+  {
+    Starfield(&renderer);
+  }
 
   fps = lastResult[0].toInt();
   renderer.render();

@@ -46,6 +46,12 @@ const char MAIN_page[] PROGMEM = R"=====(
   <label for="bmlogo">BM Logo</label><br>
   <input type="checkbox" id="bigheart" name="bigheart" value="bigheart">
   <label for="bigheart">Heart</label><br>
+  <input type="checkbox" id="ants" name="ants" value="ants">
+  <label for="ants">Ants</label><br>
+  <input type="checkbox" id="rain" name="rain" value="rain">
+  <label for="rain">Rain ON Meee</label><br>
+  <input type="checkbox" id="starfield" name="starfield" value="starfield">
+  <label for="starfield">Starfield</label><br>
   <br />
   <input type="submit" value="Submit" />
 </form>
@@ -72,10 +78,10 @@ void handle_NotFound()
   server.send(404, "text/plain", "Not found");
 }
 
-String lastResult[]{"45", "0.0", "0.01",
-                    "partyline_off", "sparkle_off", "tannenbaum_off", "litbaum_off",
-                    "screensaver_off", "usehsl_off", "bmlogo_off", "star_off", "bigheart_off",
-                    "circle_off", "runner_off", "tunnel_off"};
+String lastResult[]{"60", "0.8", "0.01",
+                    "partyline", "sparkle_off", "tannenbaum_off", "litbaum_off",
+                    "screensaver_off", "usehsl", "bmlogo_off", "star_off", "bigheart_off",
+                    "circle_off", "runner_off", "tunnel_off", "ants_off", "rain_off", "starfield_off"};
 
 void handle_next()
 {
@@ -94,6 +100,9 @@ void handle_next()
   lastResult[12] = server.arg("circle");
   lastResult[13] = server.arg("runner");
   lastResult[14] = server.arg("tunnel");
+  lastResult[15] = server.arg("ants");
+  lastResult[16] = server.arg("rain");
+  lastResult[17] = server.arg("starfield");
 
   String s = "<a href='/' style=\"fontSize:50px\"> Go Back </a>";
   server.send(200, "text/html", s); // Send web page
