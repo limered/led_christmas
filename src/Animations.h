@@ -624,50 +624,69 @@ void RainOnMe(Renderer *renderer)
 }
 
 ////////////////////////
-// Starfield
+// Feuerwerk
 ////////////////////////
 
-struct CoordF
+Coord firework_circle[] = {Coord(-1, 2), Coord(0, 2), Coord(1, 2), Coord(-2, 1), Coord(-2, 0), Coord(-2, -1), Coord(2, 1), Coord(2, 0), Coord(2, -1), Coord(-1, -2), Coord(0, -2), Coord(1, -2)};
+
+
+Coord firework_coord(5,0);
+uint8_t mode = 0;
+uint8_t trail_duration = 5;
+float fire_animation_delta;
+
+void GoToMode0()
 {
-  float x;
-  float y;
-  CoordF(float _x, float _y)
-  {
-    x = _x;
-    y = _y;
-  }
-};
+  mode = 0;
+  firework_coord.x = random(9);
+  firework_coord.y = 0;
+  trail_duration = random(4) + long(4);
+  nextColor();
+}
 
-CoordF stars[] = {CoordF(1, 1), CoordF(2, 2), CoordF(4, 2), CoordF(5, 1), CoordF(5, 7),
-                  CoordF(-3, 3), CoordF(-2, 4), CoordF(0, -1), CoordF(-2, 3), CoordF(7, 3),
-                  CoordF(-2, -4), CoordF(-2, -1), CoordF(-2, 4), CoordF(2, -3), CoordF(1, -1)};
-CoordF starDirs[] = {CoordF(0.53, 1.32), CoordF(-1.09, 0.90), CoordF(-1.18, -0.77), CoordF(0.36, -1.26), CoordF(1.31, -0.07),
-                     CoordF(0.07, 1.41), CoordF(-1.36, 0.40), CoordF(-0.55, -1.18), CoordF(0.88, -1.15), CoordF(1.32, 0.51),
-                     CoordF(-0.62, 1.26), CoordF(-1.39, -0.22), CoordF(-0.22, -1.30), CoordF(1.26, -0.64), CoordF(1, 0.9)};
+float firework_scale_t = 0.0;
+float firework_scale_delta = 0.1;
+float firework_rotation = 0.0;
+float firework_scale_size = 1.1;
+float firework_scale_mod_x = 1.0;
+float firework_scale_mod_y = 1.0;
 
-const CoordF starCenter(4.5, 4.5);
-uint8_t pStars = 0;
-
-void Starfield(Renderer *renderer)
+void GoToMode1()
 {
-  // reset
-  auto star = &stars[pStars];
-  if (abs(star->x) > 5 || abs(star->y) > 5)
+  mode = 1;
+  firework_scale_t = 0;
+  firework_scale_delta = random(10) + 20;
+  firework_scale_delta = float(1.0) / firework_scale_delta;
+  firework_rotation = (random(360) / 180.0) * PI;
+  firework_scale_size = (random(6) + 9) * 0.1;
+  firework_scale_mod_x = (6 + random(8)) * 0.1;
+  firework_scale_mod_y = (6 + random(8)) * 0.1;
+}
+
+void Firework(Renderer *renderer)
+{
+  if(mode == 0){
+    int newY = (firework_coord.y + 1) > 10 ? 0 : firework_coord.y + 1;
+    firework_coord.y = newY;
+
+    renderer->setPixel(firework_coord.x, firework_coord.y, white);
+    if(newY >= trail_duration){
+      GoToMode1();
+    }
+  }else if (mode == 1)
   {
-    star->x = 0;
-    star->y = 0;
+    firework_scale_t += firework_scale_delta;
+    float t = firework_scale_size - powf(1.0 - firework_scale_t, 5);
+
+    RgbColor col = (useHsl) ? RgbColor(hueShiftColor) : RgbColor(colors[pColors]);
+    col = col.Dim(255 * (firework_scale_size - t));
+
+    renderer->draw(firework_circle, 12, firework_coord, col, t * firework_scale_mod_x, t * firework_scale_mod_y, firework_rotation);
+
+    if(firework_scale_t > 1.0){
+      GoToMode0();
+    }
   }
+  
 
-  // animate
-  star->x += starDirs[pStars].x * 0.6f;
-  star->y += starDirs[pStars].y * 0.6f;
-
-  for (size_t i = 0; i < 15; i++)
-  {
-    auto col = (useHsl) ? HslColor(hueShiftColor) : HslColor(white);
-    col.L = i * 0.01f + 1.5f;
-    renderer->setPixel(stars[i].x + starCenter.x, stars[i].y + starCenter.y, col);
-  }
-
-  pStars = (pStars + 4) % 15;
 }

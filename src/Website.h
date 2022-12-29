@@ -50,8 +50,8 @@ const char MAIN_page[] PROGMEM = R"=====(
   <label for="ants">Ants</label><br>
   <input type="checkbox" id="rain" name="rain" value="rain">
   <label for="rain">Rain ON Meee</label><br>
-  <input type="checkbox" id="starfield" name="starfield" value="starfield">
-  <label for="starfield">Starfield</label><br>
+  <input type="checkbox" id="firework" name="firework" value="firework">
+  <label for="firework">Firework</label><br>
   <br />
   <input type="submit" value="Submit" />
 </form>
@@ -78,10 +78,10 @@ void handle_NotFound()
   server.send(404, "text/plain", "Not found");
 }
 
-String lastResult[]{"60", "0.8", "0.01",
-                    "partyline", "sparkle_off", "tannenbaum_off", "litbaum_off",
+String lastResult[]{"30", "0.2", "0.01",
+                    "partyline_off", "sparkle_off", "tannenbaum_off", "litbaum_off",
                     "screensaver_off", "usehsl", "bmlogo_off", "star_off", "bigheart_off",
-                    "circle_off", "runner_off", "tunnel_off", "ants_off", "rain_off", "starfield_off"};
+                    "circle_off", "runner_off", "tunnel_off", "ants_off", "rain_off", "firework"};
 
 void handle_next()
 {
@@ -102,7 +102,7 @@ void handle_next()
   lastResult[14] = server.arg("tunnel");
   lastResult[15] = server.arg("ants");
   lastResult[16] = server.arg("rain");
-  lastResult[17] = server.arg("starfield");
+  lastResult[17] = server.arg("firework");
 
   String s = "<a href='/' style=\"fontSize:50px\"> Go Back </a>";
   server.send(200, "text/html", s); // Send web page

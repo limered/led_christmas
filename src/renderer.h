@@ -119,6 +119,28 @@ public:
     }
   }
 
+  void draw(Coord *coord, uint8_t size, Coord position, RgbColor color, float scaleX, float scaleY)
+  {
+    for (size_t i = 0; i < size; i++)
+    {
+      uint8_t x = coord[i].x * scaleX + position.x;
+      uint8_t y = coord[i].y * scaleY + position.y;
+      setPixel(x, y, color);
+    }
+  }
+
+    void draw(Coord *coord, uint8_t size, Coord position, RgbColor color, float scaleX, float scaleY, float rot)
+  {
+    for (size_t i = 0; i < size; i++)
+    {
+      float rot_x = coord[i].x * cos( rot) - coord[i].y * sin(rot);
+      float rot_y = coord[i].y * cos( rot) + coord[i].x * sin(rot);
+      uint8_t x = rot_x * scaleX + position.x;
+      uint8_t y = rot_y * scaleY + position.y;
+      setPixel(x, y, color);
+    }
+  }
+
   static RgbColor randomColor()
   {
     return RgbColor(random(255), random(255), random(255));

@@ -83,9 +83,9 @@ void loop()
   {
     RainOnMe(&renderer);
   }
-  if (lastResult[17] == "starfield")
+  if (lastResult[17] == "firework")
   {
-    Starfield(&renderer);
+    Firework(&renderer);
   }
 
   fps = lastResult[0].toInt();
