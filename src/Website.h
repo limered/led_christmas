@@ -61,7 +61,7 @@ const char MAIN_page[] PROGMEM = R"=====(
 )=====";
 
 const char *ssid = "EmilsZaubershirt"; // Enter SSID here
-const char *password = "12345678";     // Enter Password here
+const char *password = "4321";     // Enter Password here
 IPAddress local_ip(192, 168, 1, 1);
 IPAddress gateway(192, 168, 1, 1);
 IPAddress subnet(255, 255, 255, 0);
@@ -78,10 +78,10 @@ void handle_NotFound()
   server.send(404, "text/plain", "Not found");
 }
 
-String lastResult[]{"30", "0.2", "0.01",
+String lastResult[]{"15", "0.2", "0.01",
                     "partyline_off", "sparkle_off", "tannenbaum_off", "litbaum_off",
-                    "screensaver_off", "usehsl", "bmlogo_off", "star_off", "bigheart_off",
-                    "circle_off", "runner_off", "tunnel_off", "ants_off", "rain_off", "firework"};
+                    "screensaver_off", "usehsl", "bmlogo", "star_off", "bigheart_off",
+                    "circle_off", "runner_off", "tunnel_off", "ants_off", "rain_off", "firework_off"};
 
 void handle_next()
 {

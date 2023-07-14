@@ -5,6 +5,9 @@ uint8_t fps = 30;
 RgbColor black(0);
 Renderer renderer(10, 10);
 
+float timeSinceStart = 0;
+float switchTime = 4*60; // 4 minutes
+
 void setup()
 {
   Serial.begin(115200);
@@ -92,6 +95,7 @@ void loop()
   renderer.render();
   delay(1000 / fps);
   renderer.framesSinceStart++;
+  timeSinceStart += 1.0 / fps;
 
   useHsl = lastResult[8] == "usehsl";
   hueShiftSpeed = lastResult[2].toFloat();
