@@ -35,7 +35,7 @@ class Renderer
   uint8_t saveLightValue = 7;
   float savePercent = 0.03;
   bool saveMode = false;
-  NeoPixelBus<NeoGrbFeature, Neo800KbpsMethod> strip;
+  NeoPixelBus<NeoRgbFeature, Neo800KbpsMethod> strip;
   RgbColor frameBuffer[pixelCount];
 
 public:
