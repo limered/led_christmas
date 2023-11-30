@@ -78,10 +78,10 @@ void handle_NotFound()
   server.send(404, "text/plain", "Not found");
 }
 
-String lastResult[]{"15", "0.2", "0.01",
+String lastResult[]{"60", "0.9", "0.01",
                     "partyline_off", "sparkle_off", "tannenbaum_off", "litbaum_off",
-                    "screensaver_off", "usehsl", "bmlogo", "star_off", "bigheart_off",
-                    "circle_off", "runner_off", "tunnel_off", "ants_off", "rain_off", "firework_off"};
+                    "screensaver_off", "usehsl_off", "bmlogo_off", "star_off", "bigheart_off",
+                    "circle_off", "runner_off", "tunnel_off", "ants_off", "rain", "firework_off"};
 
 void handle_next()
 {

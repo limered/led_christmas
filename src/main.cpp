@@ -3,7 +3,7 @@
 
 uint8_t fps = 30;
 RgbColor black(0);
-Renderer renderer(10, 10);
+Renderer renderer(25, 8);
 
 float timeSinceStart = 0;
 float switchTime = 4*60; // 4 minutes

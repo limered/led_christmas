@@ -5,7 +5,7 @@
 uint8_t posX = 0;
 uint8_t posY = 0;
 
-Coord vLine[10] = {
+Coord vLine[8] = {
     Coord(0, 0),
     Coord(0, 1),
     Coord(0, 2),
@@ -13,11 +13,9 @@ Coord vLine[10] = {
     Coord(0, 4),
     Coord(0, 5),
     Coord(0, 6),
-    Coord(0, 7),
-    Coord(0, 8),
-    Coord(0, 9)};
+    Coord(0, 7)};
 
-Coord hLine[10] = {
+Coord hLine[25] = {
     Coord(0, 0),
     Coord(1, 0),
     Coord(2, 0),
@@ -27,7 +25,22 @@ Coord hLine[10] = {
     Coord(6, 0),
     Coord(7, 0),
     Coord(8, 0),
-    Coord(9, 0)};
+    Coord(9, 0),
+    Coord(10, 0),
+    Coord(11, 0),
+    Coord(12, 0),
+    Coord(13, 0),
+    Coord(14, 0),
+    Coord(15, 0),
+    Coord(16, 0),
+    Coord(17, 0),
+    Coord(18, 0),
+    Coord(19, 0),
+    Coord(20, 0),
+    Coord(21, 0),
+    Coord(22, 0),
+    Coord(23, 0),
+    Coord(24, 0)};
 
 ///////////
 // Color
@@ -84,45 +97,207 @@ void PartyLine(Renderer *renderer)
   HslColor col = useHsl ? hueShiftColor : HslColor(colors[pColors]);
   if (lineMode == 0)
   {
-    renderer->draw(hLine, 10, Coord(0, posY), col);
-    posY++;
+    renderer->draw(hLine, renderer->frameWidth, Coord(0, posY), col);
     if (posY >= renderer->frameHeight - 1)
     {
       nextLineMode();
       nextColor();
+    }else{
+      posY++;
     }
   }
   else if (lineMode == 1)
   {
-    renderer->draw(vLine, 10, Coord(posX, 0), col);
-    posX++;
+    renderer->draw(vLine, renderer->frameHeight, Coord(posX, 0), col);
     if (posX >= renderer->frameWidth - 1)
     {
       nextLineMode();
       nextColor();
+    }else{
+      posX++;
     }
   }
   else if (lineMode == 2)
   {
-    renderer->draw(hLine, 10, Coord(0, posY), col);
-    posY--;
+    renderer->draw(hLine, renderer->frameWidth, Coord(0, posY), col);
     if (posY <= 0)
     {
       nextLineMode();
       nextColor();
+    }else{
+      posY--;
     }
   }
   else if (lineMode == 3)
   {
-    renderer->draw(vLine, 10, Coord(posX, 0), col);
-    posX--;
+    renderer->draw(vLine, renderer->frameHeight, Coord(posX, 0), col);
     if (posX <= 0)
     {
       nextLineMode();
       nextColor();
+    }else{
+      posX--;
     }
   }
 };
+
+////////////////////////////////
+// Sparkle
+///////////////////////////////
+
+void Sparkle(Renderer *renderer)
+{
+  uint8_t x = random(renderer->frameWidth);
+  uint8_t y = random(renderer->frameHeight);
+  auto color = useHsl ? hueShiftColor : HslColor(0, 0, maxL);
+  renderer->setPixel(x, y, color);
+}
+
+//////////////////////////
+// Runner
+/////////////////////////
+
+uint8_t runnerX1 = 0;
+uint8_t runnerX2 = 0;
+uint8_t runnerX3 = 0;
+uint8_t runnerY = 0;
+
+void Runner(Renderer *renderer)
+{
+  auto col = useHsl ? hueShiftColor : colors[pColors];
+  renderer->setPixel(runnerX1, runnerY, col);
+  renderer->setPixel(runnerX2, runnerY, col);
+  renderer->setPixel(runnerX3, runnerY, col);
+
+  runnerY++;
+  if (runnerY >= renderer->frameHeight)
+  {
+    runnerY = 0;
+    runnerX1++;
+    runnerX1 = runnerX1 % renderer->frameWidth;
+    runnerX2 = (runnerX1 + 8) % renderer->frameWidth;
+    runnerX3 = (runnerX1 + 17) % renderer->frameWidth;
+    nextColor();
+  }
+}
+
+////////////////////////////////////
+// Ants
+////////////////////////////////////
+struct Ant
+{
+  float x;
+  float y;
+  float dx;
+  float dy;
+  float ax;
+  float ay;
+  float speed;
+  Ant(Coord p, Coord d, float s)
+  {
+    x = p.x;
+    y = p.y;
+    dx = d.x;
+    dy = d.y;
+    speed = s;
+  };
+};
+
+Ant antA(Coord(2, 2), Coord(1, 0), 0.01f);
+Ant antB(Coord(7, 2), Coord(0, 1), 0.05f);
+Ant antC(Coord(7, 7), Coord(-1, 0), 0.04f);
+Ant antD(Coord(2, 7), Coord(0, -1), 0.076f);
+
+float Len(float x, float y)
+{
+  return sqrtf(x * x + y * y);
+};
+const float maxAntSpeed = 2.0f;
+void UpdateAnt(Ant *ant, Renderer *renderer)
+{
+  ant->x += ant->dx;
+  ant->y += ant->dy;
+
+  ant->dx += ant->ax * ant->speed;
+  ant->dy += ant->ay * ant->speed;
+
+  ant->dx = min(ant->dx, maxAntSpeed) * 0.8f;
+  ant->dy = min(ant->dy, maxAntSpeed) * 0.8f;
+
+  ant->ax = random(4.0f) - 2.0f;
+  ant->ay = random(4.0f) - 2.0f;
+
+  if (ant->x < 0)
+  {
+    ant->x = renderer->frameWidth - 1;
+  }
+  if (ant->y < 0)
+  {
+    ant->y = renderer->frameHeight - 1;
+  }
+  if (ant->x > renderer->frameWidth)
+  {
+    ant->x = 0 + 1;
+  }
+  if (ant->y > renderer->frameHeight)
+  {
+    ant->y = 0 + 1;
+  }
+}
+
+void Ants(Renderer *renderer)
+{
+
+  UpdateAnt(&antA, renderer);
+  UpdateAnt(&antB, renderer);
+  UpdateAnt(&antC, renderer);
+  UpdateAnt(&antD, renderer);
+
+  renderer->setPixel(antA.x, antA.y, (useHsl) ? RgbColor(hueShiftColor) : red);
+  renderer->setPixel(antB.x, antB.y, (useHsl) ? RgbColor(hueShiftColor) : green);
+  renderer->setPixel(antC.x, antC.y, (useHsl) ? RgbColor(hueShiftColor) : blue);
+  renderer->setPixel(antD.x, antD.y, (useHsl) ? RgbColor(hueShiftColor) : yellow);
+  renderer->setPixel(antA.x, antD.y, (useHsl) ? RgbColor(hueShiftColor) : cyan);
+  renderer->setPixel(antB.x, antC.y, (useHsl) ? RgbColor(hueShiftColor) : magenta);
+}
+
+//////////////////////////
+// Rain
+//////////////////////////
+uint8_t rainXs[] = {25, 25, 25, 25, 25, 25, 25, 25};
+
+void RainOnMe(Renderer *renderer)
+{
+  uint8_t p = random(8);
+  rainXs[p] = rainXs[p] - 1 < 0 ? 25 : rainXs[p] - 1;
+  HslColor col(white);
+  for (size_t i = 0; i < 8; i++)
+  {
+    if (rainXs[i] < 25 && rainXs[i] > -1)
+    {
+      if (useHsl)
+      {
+        col = HslColor(hueShiftColor);
+        col.H += i / 50.0f;
+      }
+      renderer->setPixel(rainXs[i], i, col);
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ////////////////////////////////
 // Tree
@@ -292,17 +467,7 @@ void HslBlock(Renderer *renderer)
   blockY += dirY;
 }
 
-////////////////////////////////
-// Sparcle
-///////////////////////////////
 
-void Sparkle(Renderer *renderer)
-{
-  uint8_t x = random(renderer->frameWidth);
-  uint8_t y = random(renderer->frameHeight);
-  auto color = useHsl ? hueShiftColor : HslColor(0, 0, maxL);
-  renderer->setPixel(x, y, color);
-}
 
 ///////////////////////////////
 // BM Logo
@@ -440,27 +605,7 @@ void Circle(Renderer *renderer)
   }
 }
 
-//////////////////////////
-// Runner
-/////////////////////////
 
-uint8_t runnerX = 0;
-uint8_t runnerY = 0;
-
-void Runner(Renderer *renderer)
-{
-  auto col = useHsl ? hueShiftColor : colors[pColors];
-  renderer->setPixel(runnerX, runnerY, col);
-
-  runnerX++;
-  if (runnerX >= renderer->frameWidth)
-  {
-    runnerX = 0;
-    runnerY++;
-    runnerY = runnerY % renderer->frameHeight;
-    nextColor();
-  }
-}
 
 ///////////////////////
 // Tunnel
@@ -516,112 +661,9 @@ void Tunnel(Renderer *renderer)
   }
 }
 
-////////////////////////////////////
-// Ants
-////////////////////////////////////
-struct Ant
-{
-  float x;
-  float y;
-  float dx;
-  float dy;
-  float ax;
-  float ay;
-  float speed;
-  Ant(Coord p, Coord d, float s)
-  {
-    x = p.x;
-    y = p.y;
-    dx = d.x;
-    dy = d.y;
-    speed = s;
-  };
-};
 
-Ant antA(Coord(2, 2), Coord(1, 0), 0.01f);
-Ant antB(Coord(7, 2), Coord(0, 1), 0.05f);
-Ant antC(Coord(7, 7), Coord(-1, 0), 0.04f);
-Ant antD(Coord(2, 7), Coord(0, -1), 0.076f);
 
-float Len(float x, float y)
-{
-  return sqrtf(x * x + y * y);
-};
-const float maxAntSpeed = 0.5f;
-void UpdateAnt(Ant *ant, Renderer *renderer)
-{
-  ant->x += ant->dx;
-  ant->y += ant->dy;
 
-  ant->dx += ant->ax * ant->speed;
-  ant->dy += ant->ay * ant->speed;
-
-  ant->dx = min(ant->dx, maxAntSpeed);
-  ant->dy = min(ant->dy, maxAntSpeed);
-
-  ant->ax = random(11) * 0.2f - 1.0f;
-  ant->ay = random(11) * 0.2f - 1.0f;
-
-  if (ant->x < -4)
-  {
-    ant->x = -4;
-    ant->dx *= -1;
-  }
-  if (ant->y < -4)
-  {
-    ant->y = -4;
-    ant->dy *= -1;
-  }
-  if (ant->x > 4)
-  {
-    ant->x = 4;
-    ant->dx *= -1;
-  }
-  if (ant->y > 4)
-  {
-    ant->y = 4;
-    ant->dy *= -1;
-  }
-}
-
-const Coord antCenter(4, 4);
-void Ants(Renderer *renderer)
-{
-
-  UpdateAnt(&antA, renderer);
-  UpdateAnt(&antB, renderer);
-  UpdateAnt(&antC, renderer);
-  UpdateAnt(&antD, renderer);
-
-  renderer->setPixel(antA.x + antCenter.x, antA.y + antCenter.y, (useHsl) ? RgbColor(hueShiftColor) : red);
-  renderer->setPixel(antB.x + antCenter.x, antB.y + antCenter.y, (useHsl) ? RgbColor(hueShiftColor) : green);
-  renderer->setPixel(antC.x + antCenter.x, antC.y + antCenter.y, (useHsl) ? RgbColor(hueShiftColor) : blue);
-  renderer->setPixel(antD.x + antCenter.x, antD.y + antCenter.y, (useHsl) ? RgbColor(hueShiftColor) : yellow);
-}
-
-//////////////////////////
-// Rain
-//////////////////////////
-uint8_t rainYs[] = {10, 10, 10, 10, 10, 10, 10, 10, 10, 10};
-
-void RainOnMe(Renderer *renderer)
-{
-  uint8_t p = random(10);
-  rainYs[p] = rainYs[p] - 1 < 0 ? 10 : rainYs[p] - 1;
-  HslColor col(white);
-  for (size_t i = 0; i < 10; i++)
-  {
-    if (rainYs[i] < 10 && rainYs[i] > -1)
-    {
-      if (useHsl)
-      {
-        col = HslColor(hueShiftColor);
-        col.H += i / 50.0f;
-      }
-      renderer->setPixel(i, rainYs[i], col);
-    }
-  }
-}
 
 ////////////////////////
 // Feuerwerk
