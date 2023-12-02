@@ -4,11 +4,11 @@
 const char MAIN_page[] PROGMEM = R"=====(
 <!DOCTYPE html>
 <html>
-<body>
+<body style="font-family: Arial; font-size: 25px;">
 
-<h2>Rainbow Controller<h2>
+<h1>Rainbow Controller<h1>
 
-<form action="/action_page" style="fontSize: 50px">
+<form action="/action_page" style="width: 100vw; display: flex; flex-direction: column; justify-content: center; padding: 20px;">
   Speed<br/>
   <input type="range" name="speed" value="30" min="10" max="120" oninput="this.nextElementSibling.value = this.value" />
   <output>30</output>
@@ -21,46 +21,38 @@ const char MAIN_page[] PROGMEM = R"=====(
   <input type="range" name="hue" step="0.01" value="0.01" min="0.0" max="0.6" oninput="this.nextElementSibling.value = this.value"/>
   <output>0.01</output>
   <br />
-  <input type="checkbox" id="usehsl" name="usehsl" value="usehsl">
-  <label for="usehsl">Special Mode</label><br/>
+  <div>
+    <input type="checkbox" id="usehsl" name="usehsl" value="usehsl" style="transform: scale(4); margin: 20px;">
+    <label for="usehsl"> Special Mode</label>
+  </div>
+  <br/>
   <h3>Animations:</h3>
-  <input type="checkbox" id="partyline" name="partyline" value="partyline">
-  <label for="partyline">Partyline</label><br>
-  <input type="checkbox" id="circle" name="circle" value="circle">
-  <label for="circle">Spinner</label><br>
-  <input type="checkbox" id="tunnel" name="tunnel" value="tunnel">
-  <label for="tunnel">Tunnel</label><br>
-  <input type="checkbox" id="sparkle" name="sparkle" value="sparkle">
-  <label for="sparkle">Sparkle</label><br>
-  <input type="checkbox" id="tannenbaum" name="tannenbaum" value="tannenbaum">
-  <label for="tannenbaum">Tannenbaum</label><br>
-  <input type="checkbox" id="litbaum" name="litbaum" value="litbaum">
-  <label for="litbaum">+ Lichter</label><br>
-  <input type="checkbox" id="screensaver" name="screensaver" value="screensaver">
-  <label for="screensaver">Screensaver</label><br>
-  <input type="checkbox" id="runner" name="runner" value="runner">
-  <label for="runner">Runner</label><br>
-  <input type="checkbox" id="star" name="star" value="star">
-  <label for="star">Star</label><br>
-  <input type="checkbox" id="bmlogo" name="bmlogo" value="bmlogo">
-  <label for="bmlogo">BM Logo</label><br>
-  <input type="checkbox" id="bigheart" name="bigheart" value="bigheart">
-  <label for="bigheart">Heart</label><br>
-  <input type="checkbox" id="ants" name="ants" value="ants">
-  <label for="ants">Ants</label><br>
-  <input type="checkbox" id="rain" name="rain" value="rain">
-  <label for="rain">Rain ON Meee</label><br>
-  <input type="checkbox" id="firework" name="firework" value="firework">
-  <label for="firework">Firework</label><br>
+  <select name="animation" style="font-size: 50px;">
+    <option value="partyline">Partyline</option>
+    <!-- <option value="circle">Spinner</option> -->
+    <!-- <option value="tunnel">Tunnel</option> -->
+    <option value="sparkle">Sparkle</option>
+    <!-- <option value="tannenbaum">Tannenbaum</option> -->
+    <!-- <option value="litbaum">+ Lichter</option> -->
+    <!-- <option value="screensaver">Screensaver</option> -->
+    <option value="runner">Runner</option>
+    <!-- <option value="star">Star</option> -->
+    <!-- <option value="bmlogo">BM Logo</option> -->
+    <!-- <option value="bigheart">Heart</option> -->
+    <option value="ants">Ants</option>
+    <option value="rain">Rain ON Meee</option>
+    <!-- <option value="firework">Firework</option> -->
+  </select>
   <br />
-  <input type="submit" value="Submit" />
+  <input type="submit" value="Submit" style="font-size: 50px;"/>
 </form>
 
 </body>
 </html>
 )=====";
 
-const char *ssid = "EmilsZaubershirt"; // Enter SSID here
+
+const char *ssid = "PARTYETI"; // Enter SSID here
 const char *password = "4321";     // Enter Password here
 IPAddress local_ip(192, 168, 1, 1);
 IPAddress gateway(192, 168, 1, 1);
@@ -78,32 +70,16 @@ void handle_NotFound()
   server.send(404, "text/plain", "Not found");
 }
 
-String lastResult[]{"60", "0.9", "0.01",
-                    "partyline_off", "sparkle_off", "tannenbaum_off", "litbaum_off",
-                    "screensaver_off", "usehsl_off", "bmlogo_off", "star_off", "bigheart_off",
-                    "circle_off", "runner_off", "tunnel_off", "ants_off", "rain", "firework_off"};
+String lastResult[]{"60", "0.9", "0.01", "usehsl", "partyline"};
 
 void handle_next()
 {
   lastResult[0] = server.arg("speed");
   lastResult[1] = server.arg("fade");
-  lastResult[8] = server.arg("usehsl");
   lastResult[2] = server.arg("hue");
-  lastResult[3] = server.arg("partyline");
-  lastResult[4] = server.arg("sparkle");
-  lastResult[5] = server.arg("tannenbaum");
-  lastResult[6] = server.arg("litbaum");
-  lastResult[7] = server.arg("screensaver");
-  lastResult[9] = server.arg("bmlogo");
-  lastResult[10] = server.arg("star");
-  lastResult[11] = server.arg("bigheart");
-  lastResult[12] = server.arg("circle");
-  lastResult[13] = server.arg("runner");
-  lastResult[14] = server.arg("tunnel");
-  lastResult[15] = server.arg("ants");
-  lastResult[16] = server.arg("rain");
-  lastResult[17] = server.arg("firework");
+  lastResult[3] = server.arg("usehsl");
+  lastResult[4] = server.arg("animation");
 
-  String s = "<a href='/' style=\"fontSize:50px\"> Go Back </a>";
+  String s = MAIN_page;             // Read HTML contents
   server.send(200, "text/html", s); // Send web page
 }

@@ -33,7 +33,7 @@ class Renderer
   static const uint16_t pixelCount = 200;
   static const uint8_t pixelPin = 2;
   uint8_t saveLightValue = 7;
-  float savePercent = 0.3;
+  float savePercent = 0.5;
   bool saveMode = true;
   NeoPixelBus<NeoRgbFeature, Neo800KbpsMethod> strip;
   RgbColor frameBuffer[pixelCount];

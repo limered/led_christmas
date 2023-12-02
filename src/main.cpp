@@ -34,15 +34,15 @@ void loop()
   renderer.clearDegradation = lastResult[1].toFloat();
   renderer.clear();
 
-  if (lastResult[3] == "partyline")
+  if (lastResult[4] == "partyline")
   {
     PartyLine(&renderer);
   }
-  if (lastResult[12] == "circle")
+  if (lastResult[4] == "circle")
   {
     Circle(&renderer);
   }
-  if (lastResult[14] == "tunnel")
+  if (lastResult[4] == "tunnel")
   {
     Tunnel(&renderer);
   }
@@ -50,43 +50,43 @@ void loop()
   {
     Sparkle(&renderer);
   }
-  if (lastResult[5] == "tannenbaum")
+  if (lastResult[4] == "tannenbaum")
   {
     Tannenbaum(&renderer);
   }
-  if (lastResult[6] == "litbaum")
+  if (lastResult[4] == "litbaum")
   {
     TannenbaumLights(&renderer);
   }
-  if (lastResult[7] == "screensaver")
+  if (lastResult[4] == "screensaver")
   {
     HslBlock(&renderer);
   }
-  if (lastResult[13] == "runner")
+  if (lastResult[4] == "runner")
   {
     Runner(&renderer);
   }
-  if (lastResult[10] == "star")
+  if (lastResult[4] == "star")
   {
     Star(&renderer);
   }
-  if (lastResult[9] == "bmlogo")
+  if (lastResult[4] == "bmlogo")
   {
     BmLogo(&renderer);
   }
-  if (lastResult[11] == "bigheart")
+  if (lastResult[4] == "bigheart")
   {
     BigHeart(&renderer);
   }
-  if (lastResult[15] == "ants")
+  if (lastResult[4] == "ants")
   {
     Ants(&renderer);
   }
-  if (lastResult[16] == "rain")
+  if (lastResult[4] == "rain")
   {
     RainOnMe(&renderer);
   }
-  if (lastResult[17] == "firework")
+  if (lastResult[4] == "firework")
   {
     Firework(&renderer);
   }
@@ -97,7 +97,7 @@ void loop()
   renderer.framesSinceStart++;
   timeSinceStart += 1.0 / fps;
 
-  useHsl = lastResult[8] == "usehsl";
+  useHsl = lastResult[3] == "usehsl";
   hueShiftSpeed = lastResult[2].toFloat();
   ShiftHue();
 }
