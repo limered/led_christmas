@@ -286,6 +286,90 @@ void RainOnMe(Renderer *renderer)
 }
 
 
+////////////////////////
+// Feuerwerk
+////////////////////////
+
+Coord firework_circle[] = {
+  Coord(-1, 2), 
+  Coord(0, 2), 
+  Coord(1, 2), 
+  Coord(-2, 1), 
+  Coord(-2, 0), 
+  Coord(-2, -1), 
+  Coord(2, 1), 
+  Coord(2, 0), 
+  Coord(2, -1), 
+  Coord(-1, -2), 
+  Coord(0, -2), 
+  Coord(1, -2)
+  };
+
+
+Coord firework_coord(5,0);
+uint8_t mode = 0;
+uint8_t trail_duration = 5;
+float fire_animation_delta;
+
+void GoToMode0()
+{
+  mode = 0;
+  firework_coord.x = 0;
+  firework_coord.y = random(8);
+  trail_duration = random(16) + long(4);
+  nextColor();
+}
+
+float firework_scale_t = 0.0;
+float firework_scale_delta = 0.1;
+float firework_rotation = 0.0;
+float firework_scale_size = 1.1;
+float firework_scale_mod_x = 1.0;
+float firework_scale_mod_y = 1.0;
+
+void GoToMode1()
+{
+  mode = 1;
+  firework_scale_t = 0;
+  firework_scale_delta = random(10) + 20;
+  firework_scale_delta = float(1.0) / firework_scale_delta;
+  firework_rotation = (random(360) / 180.0) * PI;
+  firework_scale_size = (random(6) + 9) * 0.1;
+  firework_scale_mod_x = (6 + random(8)) * 0.1;
+  firework_scale_mod_y = (6 + random(8)) * 0.1;
+}
+
+void Firework(Renderer *renderer)
+{
+  if(mode == 0){
+    int newX = (firework_coord.x + 1) > 24 ? 0 : firework_coord.x + 1;
+    firework_coord.x = newX;
+
+    renderer->setPixel(firework_coord.x, firework_coord.y, white);
+    if(newX >= trail_duration){
+      GoToMode1();
+    }
+  }else if (mode == 1)
+  {
+    firework_scale_t += firework_scale_delta;
+    float t = firework_scale_size - powf(1.0 - firework_scale_t, 5);
+
+    RgbColor col = (useHsl) ? RgbColor(hueShiftColor) : RgbColor(colors[pColors]);
+    col = col.Dim(255 * (firework_scale_size - t));
+
+    renderer->draw(firework_circle, 12, firework_coord, col, t * firework_scale_mod_x, t * firework_scale_mod_y, firework_rotation);
+
+    if(firework_scale_t > 1.0){
+      GoToMode0();
+    }
+  }
+}
+
+
+
+
+
+
 
 
 
@@ -664,71 +748,3 @@ void Tunnel(Renderer *renderer)
 
 
 
-
-////////////////////////
-// Feuerwerk
-////////////////////////
-
-Coord firework_circle[] = {Coord(-1, 2), Coord(0, 2), Coord(1, 2), Coord(-2, 1), Coord(-2, 0), Coord(-2, -1), Coord(2, 1), Coord(2, 0), Coord(2, -1), Coord(-1, -2), Coord(0, -2), Coord(1, -2)};
-
-
-Coord firework_coord(5,0);
-uint8_t mode = 0;
-uint8_t trail_duration = 5;
-float fire_animation_delta;
-
-void GoToMode0()
-{
-  mode = 0;
-  firework_coord.x = random(9);
-  firework_coord.y = 0;
-  trail_duration = random(4) + long(4);
-  nextColor();
-}
-
-float firework_scale_t = 0.0;
-float firework_scale_delta = 0.1;
-float firework_rotation = 0.0;
-float firework_scale_size = 1.1;
-float firework_scale_mod_x = 1.0;
-float firework_scale_mod_y = 1.0;
-
-void GoToMode1()
-{
-  mode = 1;
-  firework_scale_t = 0;
-  firework_scale_delta = random(10) + 20;
-  firework_scale_delta = float(1.0) / firework_scale_delta;
-  firework_rotation = (random(360) / 180.0) * PI;
-  firework_scale_size = (random(6) + 9) * 0.1;
-  firework_scale_mod_x = (6 + random(8)) * 0.1;
-  firework_scale_mod_y = (6 + random(8)) * 0.1;
-}
-
-void Firework(Renderer *renderer)
-{
-  if(mode == 0){
-    int newY = (firework_coord.y + 1) > 10 ? 0 : firework_coord.y + 1;
-    firework_coord.y = newY;
-
-    renderer->setPixel(firework_coord.x, firework_coord.y, white);
-    if(newY >= trail_duration){
-      GoToMode1();
-    }
-  }else if (mode == 1)
-  {
-    firework_scale_t += firework_scale_delta;
-    float t = firework_scale_size - powf(1.0 - firework_scale_t, 5);
-
-    RgbColor col = (useHsl) ? RgbColor(hueShiftColor) : RgbColor(colors[pColors]);
-    col = col.Dim(255 * (firework_scale_size - t));
-
-    renderer->draw(firework_circle, 12, firework_coord, col, t * firework_scale_mod_x, t * firework_scale_mod_y, firework_rotation);
-
-    if(firework_scale_t > 1.0){
-      GoToMode0();
-    }
-  }
-  
-
-}
