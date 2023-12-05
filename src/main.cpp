@@ -90,6 +90,10 @@ void loop()
   {
     Firework(&renderer);
   }
+  if (lastResult[4] == "colorwheel")
+  {
+    ColorWheel(&renderer);
+  }
 
   fps = lastResult[0].toInt();
   renderer.render();

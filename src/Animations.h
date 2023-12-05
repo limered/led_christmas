@@ -365,6 +365,38 @@ void Firework(Renderer *renderer)
   }
 }
 
+////////////////////////////////
+// Color Wheel
+////////////////////////////////
+
+Coord wheelLine[] = {
+  Coord(0, 0), Coord(1, 0), Coord(2, 0), Coord(3, 0), Coord(4, 0), Coord(5, 0), 
+  Coord(6, 0), Coord(7, 0), Coord(8, 0), Coord(9, 0), Coord(10, 0), Coord(11, 0)
+  };
+
+float numRays = 5.0;
+float rotationSpeed = 0.1;
+float angleStep = 2 * PI / numRays;
+Coord center = Coord(12, 3);
+
+void ColorWheel(Renderer *renderer)
+{
+  float animationStart = fmodf(renderer->framesSinceStart * rotationSpeed, 2 * PI);
+
+  for (int i = 0; i < numRays; i++)
+  {
+    float angle = i * angleStep;
+    float animationAngle = fmodf(animationStart + angle, 2 * PI);
+
+    HslColor color = HslColor(colors[i]);
+    if(useHsl){
+      color.H += hueShiftColor.H;
+    }
+
+    renderer->draw(wheelLine, 13, center, color, 1, 1, animationAngle);
+  }
+}
+
 
 
 
