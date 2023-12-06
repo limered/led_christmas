@@ -48,6 +48,7 @@ const char MAIN_page[] PROGMEM = R"=====(
     <option value="firework">Firework</option>
     <option value="colorwheel">Colorwheel</option>
     <option value="stacker">Stacker</option>
+    <option value="waves">Waves</option>
   </select>
   <br />
   <input type="submit" value="Submit" style="font-size: 50px;"/>
@@ -77,7 +78,7 @@ void handle_NotFound()
   server.send(404, "text/plain", "Not found");
 }
 
-String lastResult[]{"90", "0.2", "0.01", "", "stacker", "demo"};
+String lastResult[]{"90", "0.9", "0.01", "usehsl_", "waves", "demo_"};
 
 void handle_next()
 {

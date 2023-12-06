@@ -440,6 +440,55 @@ void Stacker(Renderer *renderer)
   }
 }
 
+////////////////////////////////
+// Linear Waves
+////////////////////////////////
+
+float waveCoord = 0;
+size_t waveColorCounter = 0;
+HslColor currentWaveColor = blue;
+
+void LinearWaves(Renderer *renderer){
+  for (size_t i = 0; i < 25; i++)
+  {
+    auto color = useHsl ? hueShiftColor : currentWaveColor;
+    int absolute = abs(int(waveCoord - i));
+    if(absolute == 4){
+      color.L = 0.4;
+    }
+    if(absolute == 3){
+      color.L = 0.3;
+    }
+    if(absolute == 2){
+      color.L = 0.1;
+    }
+    if(absolute == 1){
+      color.L = 0;
+    }
+    if(absolute == 0){
+      color.L = 0;
+    }
+    renderer->draw(stackLine, 8, Coord(i, 0), color);
+  }
+
+  waveCoord += 0.5;
+  if(waveCoord > 23){
+    waveCoord = 0;
+
+    if(waveColorCounter++ > 2){
+      waveColorCounter = 0;
+      currentWaveColor = hueShiftColor;
+    }
+  }
+}
+
+////////////////////////////////
+// Radial Waves
+////////////////////////////////
+
+
+
+
 
 
 
