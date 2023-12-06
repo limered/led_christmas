@@ -44,8 +44,8 @@ void loop()
   if (lastResult[5] == "demo"){
     if (switchTimer > switchTime){
       switchTimer = 0;
-      lastResult[0] = String(random(30, 80), 2);
-      lastResult[1] = String(random(10, 90) / 100.0, 2);
+      lastResult[0] = String(random(30, 60), 2);
+      lastResult[1] = String(random(40, 90) / 100.0, 2);
       lastResult[2] = "0.01";
       lastResult[3] = random(2) < 1 ? "usehsl" : "";
       lastResult[4] = animations[pDemoAnimations];

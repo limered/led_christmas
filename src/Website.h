@@ -76,7 +76,7 @@ void handle_NotFound()
   server.send(404, "text/plain", "Not found");
 }
 
-String lastResult[]{"60", "0.1", "0.01", "", "partyline", "demo"};
+String lastResult[]{"60", "0.7", "0.01", "", "partyline", "demo"};
 
 void handle_next()
 {
