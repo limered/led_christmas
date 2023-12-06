@@ -452,27 +452,16 @@ void LinearWaves(Renderer *renderer){
   for (size_t i = 0; i < 25; i++)
   {
     auto color = useHsl ? hueShiftColor : currentWaveColor;
-    int absolute = abs(int(waveCoord - i));
-    if(absolute == 4){
-      color.L = 0.4;
+    int absolute = int(waveCoord - i);
+    if(absolute <= 4 && absolute >= 0){
+      continue;
     }
-    if(absolute == 3){
-      color.L = 0.3;
-    }
-    if(absolute == 2){
-      color.L = 0.1;
-    }
-    if(absolute == 1){
-      color.L = 0;
-    }
-    if(absolute == 0){
-      color.L = 0;
-    }
+    
     renderer->draw(stackLine, 8, Coord(i, 0), color);
   }
 
   waveCoord += 0.5;
-  if(waveCoord > 23){
+  if(waveCoord > 29){
     waveCoord = 0;
 
     if(waveColorCounter++ > 2){
@@ -483,7 +472,7 @@ void LinearWaves(Renderer *renderer){
 }
 
 ////////////////////////////////
-// Radial Waves
+// Fire
 ////////////////////////////////
 
 
