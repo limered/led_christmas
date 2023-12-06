@@ -397,9 +397,48 @@ void ColorWheel(Renderer *renderer)
   }
 }
 
+////////////////////////////////
+// Stacker
+////////////////////////////////
 
+Coord stackLine[] = {
+  Coord(0, 0), Coord(0, 1), Coord(0, 2), Coord(0, 3), Coord(0, 4), Coord(0, 5), Coord(0, 6), Coord(0, 7),  
+};
 
+HslColor stackColors[25];
 
+size_t stackHeight = 0;
+size_t stackAnimationPos = 24;
+size_t stackColorPointer = 0;
+
+void Stacker(Renderer *renderer)
+{
+  for (size_t i = 0; i < stackHeight; i++)
+  {
+    if(useHsl){
+      renderer->draw(stackLine, 8, Coord(i, 0), stackColors[i]);
+    }else{
+      renderer->draw(stackLine, 8, Coord(i, 0), colors[stackColorPointer]);
+    }
+  }
+  
+  if(useHsl){
+    renderer->draw(stackLine, 8, Coord(stackAnimationPos--, 0), stackColors[stackHeight]);
+  }else{
+    renderer->draw(stackLine, 8, Coord(stackAnimationPos--, 0), colors[stackColorPointer]);
+  }
+
+  if(stackAnimationPos <= stackHeight){
+    stackAnimationPos = 24;
+    stackHeight++;
+    if(stackHeight > 24){
+      stackHeight = 0;
+      stackColorPointer = (stackColorPointer + 1) % 6;
+    }else{
+      stackColors[stackHeight] = hueShiftColor;
+    }
+  }
+}
 
 
 

@@ -12,7 +12,7 @@ int pDemoAnimations = 0;
 float switchTimer = 0;
 float switchTime = 10;
 
-String animations[]{"partyline", "sparkle", "runner", "ants", "colorwheel", "rain", "firework" };
+String animations[]{"partyline", "sparkle", "runner", "ants", "colorwheel", "rain", "firework", "stacker" };
 // Demo Mode
 
 void setup()
@@ -49,7 +49,7 @@ void loop()
       lastResult[2] = "0.01";
       lastResult[3] = random(2) < 1 ? "usehsl" : "";
       lastResult[4] = animations[pDemoAnimations];
-      pDemoAnimations = (pDemoAnimations + 1) % 7;
+      pDemoAnimations = (pDemoAnimations + 1) % 8;
     }
     else{
       switchTimer += 1.0 / fps;
@@ -115,6 +115,10 @@ void loop()
   if (lastResult[4] == "colorwheel")
   {
     ColorWheel(&renderer);
+  }
+  if (lastResult[4] == "stacker")
+  {
+    Stacker(&renderer);
   }
 
   fps = lastResult[0].toInt();
