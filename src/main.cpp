@@ -6,7 +6,14 @@ RgbColor black(0);
 Renderer renderer(25, 8);
 
 float timeSinceStart = 0;
-float switchTime = 4*60; // 4 minutes
+
+// Demo Mode
+int pDemoAnimations = 0;
+float switchTimer = 0;
+float switchTime = 10;
+
+String animations[]{"partyline", "sparkle", "runner", "ants", "colorwheel", "rain", "firework" };
+// Demo Mode
 
 void setup()
 {
@@ -33,6 +40,21 @@ void loop()
   server.handleClient();
   renderer.clearDegradation = lastResult[1].toFloat();
   renderer.clear();
+
+  if (lastResult[5] == "demo"){
+    if (switchTimer > switchTime){
+      switchTimer = 0;
+      lastResult[0] = String(random(30, 80), 2);
+      lastResult[1] = String(random(10, 90) / 100.0, 2);
+      lastResult[2] = "0.01";
+      lastResult[3] = random(2) < 1 ? "usehsl" : "";
+      lastResult[4] = animations[pDemoAnimations];
+      pDemoAnimations = (pDemoAnimations + 1) % 7;
+    }
+    else{
+      switchTimer += 1.0 / fps;
+    }
+  }
 
   if (lastResult[4] == "partyline")
   {

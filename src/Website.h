@@ -25,6 +25,10 @@ const char MAIN_page[] PROGMEM = R"=====(
     <input type="checkbox" id="usehsl" name="usehsl" value="usehsl" style="transform: scale(4); margin: 20px;">
     <label for="usehsl"> Special Mode</label>
   </div>
+  <div>
+    <input type="checkbox" id="demo" name="demo" value="demo" style="transform: scale(4); margin: 20px;">
+    <label for="demo"> Demo Mode </label>
+  </div>
   <br/>
   <h3>Animations:</h3>
   <select name="animation" style="font-size: 50px;">
@@ -53,6 +57,7 @@ const char MAIN_page[] PROGMEM = R"=====(
 )=====";
 
 
+
 const char *ssid = "PARTYETI"; // Enter SSID here
 const char *password = "4321";     // Enter Password here
 IPAddress local_ip(192, 168, 1, 1);
@@ -71,7 +76,7 @@ void handle_NotFound()
   server.send(404, "text/plain", "Not found");
 }
 
-String lastResult[]{"60", "0.1", "0.01", "usehsl", "colorwheel"};
+String lastResult[]{"60", "0.1", "0.01", "", "partyline", "demo"};
 
 void handle_next()
 {
@@ -80,6 +85,7 @@ void handle_next()
   lastResult[2] = server.arg("hue");
   lastResult[3] = server.arg("usehsl");
   lastResult[4] = server.arg("animation");
+  lastResult[5] = server.arg("demo");
 
   String s = MAIN_page;             // Read HTML contents
   server.send(200, "text/html", s); // Send web page
