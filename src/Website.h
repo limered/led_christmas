@@ -10,8 +10,8 @@ const char MAIN_page[] PROGMEM = R"=====(
 
 <form action="/action_page" style="width: 100vw; display: flex; flex-direction: column; justify-content: center; padding: 20px;">
   Speed<br/>
-  <input type="range" name="speed" value="30" min="10" max="120" oninput="this.nextElementSibling.value = this.value" />
-  <output>30</output>
+  <input type="range" name="speed" value="50" min="10" max="120" oninput="this.nextElementSibling.value = this.value" />
+  <output>50</output>
   <br/>
   Fade Strength<br />
   <input type="range" name="fade" step="0.1" value="0.7" min="0.0" max="0.9" oninput="this.nextElementSibling.value = this.value"/>
@@ -44,12 +44,12 @@ const char MAIN_page[] PROGMEM = R"=====(
     <!-- <option value="bmlogo">BM Logo</option> -->
     <!-- <option value="bigheart">Heart</option> -->
     <option value="ants">Ants</option>
+    <option value="fire">Fire</option>
     <option value="rain">Rain ON Meee</option>
     <option value="firework">Firework</option>
     <option value="colorwheel">Colorwheel</option>
     <option value="stacker">Stacker</option>
     <option value="waves">Waves</option>
-    <option value="fire">Fire</option>
   </select>
   <br />
   <input type="submit" value="Submit" style="font-size: 50px;"/>
@@ -79,7 +79,7 @@ void handle_NotFound()
   server.send(404, "text/plain", "Not found");
 }
 
-String lastResult[]{"60", "0.7", "0.01", "usehsl_", "fire", "demo_"};
+String lastResult[]{"50", "0.7", "0.01", "usehsl_", "fire", "demo_"};
 
 void handle_next()
 {

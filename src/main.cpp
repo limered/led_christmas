@@ -50,7 +50,7 @@ void loop()
       lastResult[2] = "0.01";
       lastResult[3] = random(2) < 1 ? "usehsl" : "";
       lastResult[4] = animations[pDemoAnimations];
-      pDemoAnimations = (pDemoAnimations + 1) % 9;
+      pDemoAnimations = (pDemoAnimations + 1) % 10;
     }
     else{
       switchTimer += 1.0 / fps;
