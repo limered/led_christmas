@@ -401,7 +401,7 @@ void ColorWheel(Renderer *renderer)
 // Stacker
 ////////////////////////////////
 
-Coord stackLine[] = {
+Coord horizontalLine[] = {
   Coord(0, 0), Coord(0, 1), Coord(0, 2), Coord(0, 3), Coord(0, 4), Coord(0, 5), Coord(0, 6), Coord(0, 7),  
 };
 
@@ -416,16 +416,16 @@ void Stacker(Renderer *renderer)
   for (size_t i = 0; i < stackHeight; i++)
   {
     if(useHsl){
-      renderer->draw(stackLine, 8, Coord(i, 0), stackColors[i]);
+      renderer->draw(horizontalLine, 8, Coord(i, 0), stackColors[i]);
     }else{
-      renderer->draw(stackLine, 8, Coord(i, 0), colors[stackColorPointer]);
+      renderer->draw(horizontalLine, 8, Coord(i, 0), colors[stackColorPointer]);
     }
   }
   
   if(useHsl){
-    renderer->draw(stackLine, 8, Coord(stackAnimationPos--, 0), stackColors[stackHeight]);
+    renderer->draw(horizontalLine, 8, Coord(stackAnimationPos--, 0), stackColors[stackHeight]);
   }else{
-    renderer->draw(stackLine, 8, Coord(stackAnimationPos--, 0), colors[stackColorPointer]);
+    renderer->draw(horizontalLine, 8, Coord(stackAnimationPos--, 0), colors[stackColorPointer]);
   }
 
   if(stackAnimationPos <= stackHeight){
@@ -457,7 +457,7 @@ void LinearWaves(Renderer *renderer){
       continue;
     }
     
-    renderer->draw(stackLine, 8, Coord(i, 0), color);
+    renderer->draw(horizontalLine, 8, Coord(i, 0), color);
   }
 
   waveCoord += 0.5;
@@ -527,9 +527,21 @@ void Fire(Renderer *renderer){
   }
 }
 
+////////////////////////////////
+// Line Race
+////////////////////////////////
 
+size_t lineRaceLines[25];
 
+void LineRace(Renderer *renderer){
+  for(size_t i = 0; i < 25; i++){
+    HslColor col = useHsl ? hueShiftColor : HslColor(colors[i % 6]);
+    renderer->draw(horizontalLine, 4, Coord(i, lineRaceLines[i]), col);
 
+    if(random(4) < 1)
+      lineRaceLines[i] = (lineRaceLines[i] + 1) % 8;
+  }
+}
 
 
 

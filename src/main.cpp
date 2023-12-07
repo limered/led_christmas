@@ -13,7 +13,7 @@ float switchTimer = 0;
 float switchTime = 10;
 
 String animations[]{
-  "partyline", "sparkle", "fire", "runner", "waves", "ants", "colorwheel", "rain", "stacker", "firework"  
+  "partyline", "sparkle", "fire", "runner", "waves", "ants", "colorwheel", "rain", "stacker", "firework", "linerace"
   };
 
 void setup()
@@ -48,9 +48,9 @@ void loop()
       lastResult[0] = String(random(30, 60), 2);
       lastResult[1] = String(random(40, 90) / 100.0, 2);
       lastResult[2] = "0.01";
-      lastResult[3] = random(2) < 1 ? "usehsl" : "";
+      lastResult[3] = random(3) < 1 ? "usehsl" : "";
       lastResult[4] = animations[pDemoAnimations];
-      pDemoAnimations = (pDemoAnimations + 1) % 10;
+      pDemoAnimations = (pDemoAnimations + 1) % 11;
     }
     else{
       switchTimer += 1.0 / fps;
@@ -128,6 +128,10 @@ void loop()
   if (lastResult[4] == "fire")
   {
     Fire(&renderer);
+  }
+  if (lastResult[4] == "linerace")
+  {
+    LineRace(&renderer);
   }
 
   fps = lastResult[0].toInt();

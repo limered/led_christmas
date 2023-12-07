@@ -32,6 +32,7 @@ const char MAIN_page[] PROGMEM = R"=====(
   <br/>
   <h3>Animations:</h3>
   <select name="animation" style="font-size: 50px;">
+    <option value="linerace">Weihnachtsbaum</option>
     <option value="partyline">Partyline</option>
     <!-- <option value="circle">Spinner</option> -->
     <!-- <option value="tunnel">Tunnel</option> -->
@@ -79,7 +80,7 @@ void handle_NotFound()
   server.send(404, "text/plain", "Not found");
 }
 
-String lastResult[]{"50", "0.7", "0.01", "usehsl_", "fire", "demo"};
+String lastResult[]{"60", "0.7", "0.01", "usehsl_", "linerace", "demo_"};
 
 void handle_next()
 {
