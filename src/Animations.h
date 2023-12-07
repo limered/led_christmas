@@ -475,7 +475,57 @@ void LinearWaves(Renderer *renderer){
 // Fire
 ////////////////////////////////
 
+size_t firePositions[] = {0, 0, 0, 0, 0, 0, 0, 0};
+size_t sparkPositions[] = {0, 0, 0, 0, 0, 0, 0, 0};
 
+void Fire(Renderer *renderer){
+  float baseHue = useHsl ? hueShiftColor.H : 0.0;
+  float hueDelta = useHsl ? 90.0 : 15.0;
+  // randomize fire positions
+  for (size_t i = 0; i < 8; i++)
+  {
+    firePositions[i] = random(7) + 3;
+
+    for (size_t j = 0; j <= firePositions[i]; j++){
+      HslColor color = HslColor(red);
+      color.H = baseHue + ((hueDelta * (j / 10.0)) / 360.0);
+
+      renderer->setPixel(j, i, color);
+    }
+  }
+
+  // add sparks
+  if(random(20) == 1){
+    size_t max = 0;
+    size_t coord = 0;
+    for (size_t i = 0; i < 8; i++){
+      if(firePositions[i] > max){
+        max = firePositions[i];
+        coord = i;
+      }
+    }
+    sparkPositions[coord] = max+1;
+  }
+
+  // render sparks
+  for (size_t i = 0; i < 8; i++)
+  {
+    if(sparkPositions[i] <= 0){
+      continue;
+    }
+
+    auto color = HslColor(red);
+    color.H = baseHue + (((hueDelta - 5) * (1.0 - ((sparkPositions[i] - 10) / 14.0))) / 360.0);
+    renderer->setPixel(sparkPositions[i], i, color);
+
+    if(random(5) == 1){
+      sparkPositions[i]++;
+      if(random(15) == 1 || sparkPositions[i] > 24){
+        sparkPositions[i] = 0;
+      }
+    }
+  }
+}
 
 
 

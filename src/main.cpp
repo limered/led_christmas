@@ -13,7 +13,7 @@ float switchTimer = 0;
 float switchTime = 10;
 
 String animations[]{
-  "partyline", "sparkle", "runner", "waves", "ants", "colorwheel", "rain", "stacker", "firework"  
+  "partyline", "sparkle", "fire", "runner", "waves", "ants", "colorwheel", "rain", "stacker", "firework"  
   };
 
 void setup()
@@ -124,6 +124,10 @@ void loop()
   if (lastResult[4] == "waves")
   {
     LinearWaves(&renderer);
+  }
+  if (lastResult[4] == "fire")
+  {
+    Fire(&renderer);
   }
 
   fps = lastResult[0].toInt();
