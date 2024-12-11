@@ -1,9 +1,10 @@
-#include "Animations.h"
+// #include "Animations.h"
+#include "animations1d.h"
 #include "website.h"
 
 uint8_t fps = 30;
 RgbColor black(0);
-Renderer renderer(25, 8);
+Renderer renderer(200, 1);
 
 float timeSinceStart = 0;
 
@@ -42,97 +43,99 @@ void loop()
   renderer.clearDegradation = lastResult[1].toFloat();
   renderer.clear();
 
-  if (lastResult[5] == "demo"){
-    if (switchTimer > switchTime){
-      switchTimer = 0;
-      lastResult[0] = String(random(30, 60), 2);
-      lastResult[1] = String(random(40, 90) / 100.0, 2);
-      lastResult[2] = "0.01";
-      lastResult[3] = random(3) < 1 ? "usehsl" : "";
-      lastResult[4] = animations[pDemoAnimations];
-      pDemoAnimations = (pDemoAnimations + 1) % 11;
-    }
-    else{
-      switchTimer += 1.0 / fps;
-    }
-  }
+  // if (lastResult[5] == "demo"){
+  //   if (switchTimer > switchTime){
+  //     switchTimer = 0;
+  //     lastResult[0] = String(random(30, 60), 2);
+  //     lastResult[1] = String(random(40, 90) / 100.0, 2);
+  //     lastResult[2] = "0.01";
+  //     lastResult[3] = random(3) < 1 ? "usehsl" : "";
+  //     lastResult[4] = animations[pDemoAnimations];
+  //     pDemoAnimations = (pDemoAnimations + 1) % 11;
+  //   }
+  //   else{
+  //     switchTimer += 1.0 / fps;
+  //   }
+  // }
 
-  if (lastResult[4] == "partyline")
-  {
-    PartyLine(&renderer);
-  }
-  if (lastResult[4] == "circle")
-  {
-    Circle(&renderer);
-  }
-  if (lastResult[4] == "tunnel")
-  {
-    Tunnel(&renderer);
-  }
-  if (lastResult[4] == "sparkle")
-  {
-    Sparkle(&renderer);
-  }
-  if (lastResult[4] == "tannenbaum")
-  {
-    Tannenbaum(&renderer);
-  }
-  if (lastResult[4] == "litbaum")
-  {
-    TannenbaumLights(&renderer);
-  }
-  if (lastResult[4] == "screensaver")
-  {
-    HslBlock(&renderer);
-  }
-  if (lastResult[4] == "runner")
-  {
-    Runner(&renderer);
-  }
-  if (lastResult[4] == "star")
-  {
-    Star(&renderer);
-  }
-  if (lastResult[4] == "bmlogo")
-  {
-    BmLogo(&renderer);
-  }
-  if (lastResult[4] == "bigheart")
-  {
-    BigHeart(&renderer);
-  }
-  if (lastResult[4] == "ants")
-  {
-    Ants(&renderer);
-  }
-  if (lastResult[4] == "rain")
-  {
-    RainOnMe(&renderer);
-  }
-  if (lastResult[4] == "firework")
-  {
-    Firework(&renderer);
-  }
-  if (lastResult[4] == "colorwheel")
-  {
-    ColorWheel(&renderer);
-  }
-  if (lastResult[4] == "stacker")
-  {
-    Stacker(&renderer);
-  }
-  if (lastResult[4] == "waves")
-  {
-    LinearWaves(&renderer);
-  }
-  if (lastResult[4] == "fire")
-  {
-    Fire(&renderer);
-  }
-  if (lastResult[4] == "linerace")
-  {
-    LineRace(&renderer);
-  }
+  one_color(&renderer);
+
+  // if (lastResult[4] == "partyline")
+  // {
+  //   PartyLine(&renderer);
+  // }
+  // if (lastResult[4] == "circle")
+  // {
+  //   Circle(&renderer);
+  // }
+  // if (lastResult[4] == "tunnel")
+  // {
+  //   Tunnel(&renderer);
+  // }
+  // if (lastResult[4] == "sparkle")
+  // {
+  //   Sparkle(&renderer);
+  // }
+  // if (lastResult[4] == "tannenbaum")
+  // {
+  //   Tannenbaum(&renderer);
+  // }
+  // if (lastResult[4] == "litbaum")
+  // {
+  //   TannenbaumLights(&renderer);
+  // }
+  // if (lastResult[4] == "screensaver")
+  // {
+  //   HslBlock(&renderer);
+  // }
+  // if (lastResult[4] == "runner")
+  // {
+  //   Runner(&renderer);
+  // }
+  // if (lastResult[4] == "star")
+  // {
+  //   Star(&renderer);
+  // }
+  // if (lastResult[4] == "bmlogo")
+  // {
+  //   BmLogo(&renderer);
+  // }
+  // if (lastResult[4] == "bigheart")
+  // {
+  //   BigHeart(&renderer);
+  // }
+  // if (lastResult[4] == "ants")
+  // {
+  //   Ants(&renderer);
+  // }
+  // if (lastResult[4] == "rain")
+  // {
+  //   RainOnMe(&renderer);
+  // }
+  // if (lastResult[4] == "firework")
+  // {
+  //   Firework(&renderer);
+  // }
+  // if (lastResult[4] == "colorwheel")
+  // {
+  //   ColorWheel(&renderer);
+  // }
+  // if (lastResult[4] == "stacker")
+  // {
+  //   Stacker(&renderer);
+  // }
+  // if (lastResult[4] == "waves")
+  // {
+  //   LinearWaves(&renderer);
+  // }
+  // if (lastResult[4] == "fire")
+  // {
+  //   Fire(&renderer);
+  // }
+  // if (lastResult[4] == "linerace")
+  // {
+  //   LineRace(&renderer);
+  // }
 
   fps = lastResult[0].toInt();
   renderer.render();
@@ -140,7 +143,7 @@ void loop()
   renderer.framesSinceStart++;
   timeSinceStart += 1.0 / fps;
 
-  useHsl = lastResult[3] == "usehsl";
-  hueShiftSpeed = lastResult[2].toFloat();
-  ShiftHue();
+  // useHsl = lastResult[3] == "usehsl";
+  // hueShiftSpeed = lastResult[2].toFloat();
+  // ShiftHue();
 }
