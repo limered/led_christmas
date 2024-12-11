@@ -1,6 +1,8 @@
 #include "Arduino.h"
 #include <NeoPixelBus.h>
 
+#pragma once
+
 struct Coord
 {
   int8_t x;
@@ -34,8 +36,8 @@ class Renderer
   static const uint8_t pixelPin = 2;
   uint8_t saveLightValue = 7;
   float savePercent = 0.5;
-  bool saveMode = true;
-  NeoPixelBus<NeoGrbwFeature, Neo800KbpsMethod> strip;
+  bool saveMode = false;
+  NeoPixelBus<NeoGrbFeature, Neo800KbpsMethod> strip;
   RgbColor frameBuffer[pixelCount];
 
 public:
