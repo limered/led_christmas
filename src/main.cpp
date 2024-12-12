@@ -1,21 +1,10 @@
 // #include "Animations.h"
 #include "animations1d.h"
-#include "website.h"
+#include "my_colors.h"
+#include "interface.h"
 
 uint8_t fps = 30;
-RgbColor black(0);
 Renderer renderer(98, 1);
-
-float timeSinceStart = 0;
-
-// Demo Mode
-int pDemoAnimations = 0;
-float switchTimer = 0;
-float switchTime = 10;
-
-String animations[]{
-  "partyline", "sparkle", "fire", "runner", "waves", "ants", "colorwheel", "rain", "stacker", "firework", "linerace"
-  };
 
 void setup()
 {
@@ -40,110 +29,66 @@ void setup()
 void loop()
 {
   server.handleClient();
-  renderer.clearDegradation = lastResult[1].toFloat();
+  renderer.clearDegradation = fade();
   renderer.clear();
 
-  // if (lastResult[5] == "demo"){
-  //   if (switchTimer > switchTime){
-  //     switchTimer = 0;
-  //     lastResult[0] = String(random(30, 60), 2);
-  //     lastResult[1] = String(random(40, 90) / 100.0, 2);
-  //     lastResult[2] = "0.01";
-  //     lastResult[3] = random(3) < 1 ? "usehsl" : "";
-  //     lastResult[4] = animations[pDemoAnimations];
-  //     pDemoAnimations = (pDemoAnimations + 1) % 11;
-  //   }
-  //   else{
-  //     switchTimer += 1.0 / fps;
-  //   }
-  // }
+  if (is_demo()){
+    progress_demo_switcher();
+  }
 
-  random_color(&renderer);
+  switch (animation_index())
+  {
+  case 0:
+    runner(&renderer);
+    break;
+  case 1:
+    runner_front_to_back(&renderer);
+    break;
+  case 2:
+    sparkler(&renderer);
+    break;
+  case 3:
+    breather(&renderer);
+    break;
+  case 4:
+    loading(&renderer);
+    break;
+  case 5:
+    moving_dot(&renderer);
+    break;
+  case 6:
+    conway(&renderer);
+    break;
+  case 7:
+    runner_multi(&renderer);
+    break;
+  case 8:
+    rudolph(&renderer);
+    break;
+  case 9:
+    icing(&renderer);
+    break;
+  case 10:
+    waves(&renderer);
+    break;
+  default:
+    // renderer.clear(red);
+    strobo(&renderer);
+    break;
+  }
 
-  // if (lastResult[4] == "partyline")
-  // {
-  //   PartyLine(&renderer);
-  // }
-  // if (lastResult[4] == "circle")
-  // {
-  //   Circle(&renderer);
-  // }
-  // if (lastResult[4] == "tunnel")
-  // {
-  //   Tunnel(&renderer);
-  // }
-  // if (lastResult[4] == "sparkle")
-  // {
-  //   Sparkle(&renderer);
-  // }
-  // if (lastResult[4] == "tannenbaum")
-  // {
-  //   Tannenbaum(&renderer);
-  // }
-  // if (lastResult[4] == "litbaum")
-  // {
-  //   TannenbaumLights(&renderer);
-  // }
-  // if (lastResult[4] == "screensaver")
-  // {
-  //   HslBlock(&renderer);
-  // }
-  // if (lastResult[4] == "runner")
-  // {
-  //   Runner(&renderer);
-  // }
-  // if (lastResult[4] == "star")
-  // {
-  //   Star(&renderer);
-  // }
-  // if (lastResult[4] == "bmlogo")
-  // {
-  //   BmLogo(&renderer);
-  // }
-  // if (lastResult[4] == "bigheart")
-  // {
-  //   BigHeart(&renderer);
-  // }
-  // if (lastResult[4] == "ants")
-  // {
-  //   Ants(&renderer);
-  // }
-  // if (lastResult[4] == "rain")
-  // {
-  //   RainOnMe(&renderer);
-  // }
-  // if (lastResult[4] == "firework")
-  // {
-  //   Firework(&renderer);
-  // }
-  // if (lastResult[4] == "colorwheel")
-  // {
-  //   ColorWheel(&renderer);
-  // }
-  // if (lastResult[4] == "stacker")
-  // {
-  //   Stacker(&renderer);
-  // }
-  // if (lastResult[4] == "waves")
-  // {
-  //   LinearWaves(&renderer);
-  // }
-  // if (lastResult[4] == "fire")
-  // {
-  //   Fire(&renderer);
-  // }
-  // if (lastResult[4] == "linerace")
-  // {
-  //   LineRace(&renderer);
-  // }
 
-  fps = lastResult[0].toInt();
+  fps = speed();
   renderer.render();
   delay(1000 / fps);
   renderer.framesSinceStart++;
-  timeSinceStart += 1.0 / fps;
+  renderer.timeSinceStart += 1.0 / fps;
 
-  // useHsl = lastResult[3] == "usehsl";
-  // hueShiftSpeed = lastResult[2].toFloat();
-  // ShiftHue();
+  useHsl = use_hsl();
+  hueShiftSpeed = hue_shift_speed();
+  ShiftHue();
+
+  if(is_late()){
+    renderer.saveMode = true;
+  }
 }
