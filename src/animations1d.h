@@ -10,7 +10,7 @@ RgbColor blue(0, 0, maxC);
 RgbColor magenta(maxC, 0, maxC);
 RgbColor yellow(maxC, maxC, 0);
 RgbColor cyan(0, maxC, maxC);
-RgbColor white(maxC, maxC, maxC);
+RgbColor white(maxC * 0.5, maxC * 0.5, maxC * 0.5);
 
 uint8 waist_offset = 0;
 uint8 waist_length = 36;
@@ -60,5 +60,13 @@ void one_color(Renderer *renderer)
   for (size_t i = 0; i < r_arm_length; i++)
   {
     renderer->setPixel(r_arm_offset + i, 0, cyan);
+  }
+}
+
+void random_color(Renderer *renderer)
+{
+  for (size_t i = 0; i < renderer->frameWidth; i++)
+  {
+    renderer->setPixel(i, 0, white);
   }
 }

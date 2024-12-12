@@ -4,7 +4,7 @@
 
 uint8_t fps = 30;
 RgbColor black(0);
-Renderer renderer(200, 1);
+Renderer renderer(98, 1);
 
 float timeSinceStart = 0;
 
@@ -58,7 +58,7 @@ void loop()
   //   }
   // }
 
-  one_color(&renderer);
+  random_color(&renderer);
 
   // if (lastResult[4] == "partyline")
   // {
