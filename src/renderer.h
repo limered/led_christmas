@@ -36,7 +36,6 @@ class Renderer
   static const uint8_t pixelPin = 2;
   uint8_t saveLightValue = 7;
   float savePercent = 0.5;
-  bool saveMode = false;
   NeoPixelBus<NeoGrbFeature, Neo800KbpsMethod> strip;
   RgbColor frameBuffer[pixelCount];
 
@@ -52,6 +51,8 @@ public:
   uint8_t frameHeight;
   float clearDegradation = 0.7;
   u_int framesSinceStart = 0;
+  float timeSinceStart = 0;
+  bool saveMode = false;
 
   void init()
   {
