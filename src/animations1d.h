@@ -1,16 +1,8 @@
 #include "Arduino.h"
 #include "renderer.h"
+#include "my_colors.h"
+
 #pragma once
-
-uint8_t maxC = 255;
-
-RgbColor green(0, maxC, 0);
-RgbColor red(maxC, 0, 0);
-RgbColor blue(0, 0, maxC);
-RgbColor magenta(maxC, 0, maxC);
-RgbColor yellow(maxC, maxC, 0);
-RgbColor cyan(0, maxC, maxC);
-RgbColor white(maxC * 0.5, maxC * 0.5, maxC * 0.5);
 
 uint8 waist_offset = 0;
 uint8 waist_length = 36;
