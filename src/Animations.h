@@ -46,7 +46,7 @@ Coord hLine[25] = {
 // Color
 //////////
 uint8_t maxC = 80;
-float maxL = 0.3f;
+float maxL = 1.0f;
 
 RgbColor green(0, maxC, 0);
 RgbColor red(maxC, 0, 0);
