@@ -44,7 +44,6 @@ const char MAIN_page[] PROGMEM = R"=====(
     <option value="moving_dot">Mouse</option>
     <option value="conway">Conway</option>
     <option value="runner_multi">Multirunner</option>
-    <option value="rudolph">Rudolph</option>
     <option value="icing">Traditional Ginger</option>
     <option value="waves">Waves</option>
   </select>
@@ -66,7 +65,6 @@ String animation_names[] = {
   "moving_dot", 
   "conway", 
   "runner_multi",
-  "rudolph",
   "icing",
   "waves"
 };
@@ -107,7 +105,7 @@ void handle_next()
 }
 
 uint8_t animation_index(){
-  for(uint8_t i = 0; i < 11; i++){
+  for(uint8_t i = 0; i < 10; i++){
     if(animation_names[i] == lastResult[4]){
       return i;
     }
@@ -147,7 +145,7 @@ void progress_demo_switcher(){
       lastResult[2] = "0.01";
       lastResult[3] = random(4) < 1 ? "usehsl" : "";
       lastResult[4] = animation_names[pDemoAnimations];
-      pDemoAnimations = (pDemoAnimations + random(1, 4)) % 11;
+      pDemoAnimations = (pDemoAnimations + random(1, 4)) % 10;
     }
     else{
       switchTimer += 1.0 / speed();
