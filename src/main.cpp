@@ -4,7 +4,7 @@
 #include "interface.h"
 
 uint8_t fps = 30;
-Renderer renderer(98, 1);
+Renderer renderer(45, 1);
 
 void setup()
 {
@@ -63,12 +63,9 @@ void loop()
     runner_multi(&renderer);
     break;
   case 8:
-    rudolph(&renderer);
-    break;
-  case 9:
     icing(&renderer);
     break;
-  case 10:
+  case 9:
     waves(&renderer);
     break;
   default:

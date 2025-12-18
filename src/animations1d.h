@@ -5,22 +5,22 @@
 #pragma once
 
 uint8 waist_offset = 0;
-uint8 waist_length = 36;
+uint8 waist_length = 17;
 
-uint8 buttons_offset = 36;
+uint8 buttons_offset = 27;
 uint8 buttons_length = 8;
 
-uint8 l_arm_offset = 44;
-uint8 l_arm_length = 11;
+uint8 l_arm_offset = 17;
+uint8 l_arm_length = 10;
 
-uint8 l_leg_offset = 55;
-uint8 l_leg_length = 16;
+uint8 l_leg_offset = 0;
+uint8 l_leg_length = 0;
 
-uint8 r_leg_offset = 71;
-uint8 r_leg_length = 16;
+uint8 r_leg_offset = 0;
+uint8 r_leg_length = 0;
 
-uint8 r_arm_offset = 87;
-uint8 r_arm_length = 11;
+uint8 r_arm_offset = 35;
+uint8 r_arm_length = 10;
 
 /**
  * 
@@ -44,7 +44,7 @@ void runner_with_offset(Renderer *renderer, uint8_t offset, uint8_t length, RgbC
 
 void runner(Renderer *renderer)
 {
- runner_with_offset(renderer, 0, 98);
+ runner_with_offset(renderer, 0, 45);
 }
 
 uint8_t runner_direction = 1;
@@ -63,9 +63,9 @@ void runner_front_to_back(Renderer *renderer){
 void sparkler(Renderer *renderer)
 {
   if(useHsl)
-    renderer->setPixel(random(98), 0, hueShiftColor);
+    renderer->setPixel(random(45), 0, hueShiftColor);
   else
-    renderer->setPixel(random(98), 0, white);
+    renderer->setPixel(random(45), 0, white);
 }
 
 
@@ -160,30 +160,30 @@ void moving_dot(Renderer *renderer)
   }
 
   dot_position = dot_position + direction * (turbo == 1 ? 3 : 1);
-  if(dot_position > 97){
+  if(dot_position > 44){
     dot_position = 0;
   }
   if(dot_position < 0){
-    dot_position = 97;
+    dot_position = 44;
   }
   renderer->setPixel(dot_position, 0, current_color());
 }
 
 
 // conway
-uint8_t conway_positions[98] = {0};
-uint8_t conway_buffer[98] = {0};
+uint8_t conway_positions[45] = {0};
+uint8_t conway_buffer[45] = {0};
 uint8_t conway_iterations = 0;
 
 void conway_init(Renderer *renderer){
-  for(uint8_t i = 0; i < 98; i++){
+  for(uint8_t i = 0; i < 45; i++){
     conway_positions[i] = random(2);
   }
 }
 
 uint8_t get_cell(uint8_t index){
-  auto real_index = index < 0 ? 98 + index : index;
-  real_index = index > 97 ? index % 98 : index;
+  auto real_index = index < 0 ? 45 + index : index;
+  real_index = index > 97 ? index % 45 : index;
   return conway_positions[real_index];
 }
 
@@ -198,7 +198,7 @@ uint8_t calculate_alive(uint8_t index){
 
 void conway(Renderer *renderer){
   if(renderer->framesSinceStart % 5 != 0){
-    for(uint8_t i = 0; i < 98; i++){
+    for(uint8_t i = 0; i < 45; i++){
       if(conway_positions[i] == 1){
         renderer->setPixel(i, 0, current_color());
       }
@@ -207,12 +207,12 @@ void conway(Renderer *renderer){
   }
   conway_iterations++;
   bool still_alive = false;
-  for(uint8_t i = 0; i < 98; i++){
+  for(uint8_t i = 0; i < 45; i++){
     conway_buffer[i] = calculate_alive(i);
     still_alive = still_alive || conway_buffer[i] == 1;
   }
   bool changes = false;
-  for(uint8_t i = 0; i < 98; i++){
+  for(uint8_t i = 0; i < 45; i++){
     changes = changes || conway_positions[i] != conway_buffer[i];
     conway_positions[i] = conway_buffer[i];
     if(conway_positions[i] == 1){
@@ -252,10 +252,10 @@ void runner_multi(Renderer *renderer)
   ? buttons_offset : runner_positions[1] + 1;
   runner_positions[2] = (runner_positions[2] + 1 >= l_arm_offset + l_arm_length) 
   ? l_arm_offset : runner_positions[2] + 1;
-  runner_positions[3] = (runner_positions[3] + 1 >= l_leg_offset + l_leg_length) 
-  ? l_leg_offset : runner_positions[3] + 1;
-  runner_positions[4] = (runner_positions[4] + 1 >= r_leg_offset + r_leg_length) 
-  ? r_leg_offset : runner_positions[4] + 1;
+  // runner_positions[3] = (runner_positions[3] + 1 >= l_leg_offset + l_leg_length) 
+  // ? l_leg_offset : runner_positions[3] + 1;
+  // runner_positions[4] = (runner_positions[4] + 1 >= r_leg_offset + r_leg_length) 
+  // ? r_leg_offset : runner_positions[4] + 1;
   runner_positions[5] = (runner_positions[5] + 1 >= r_arm_offset + r_arm_length) 
   ? r_arm_offset : runner_positions[5] + 1;
 
@@ -286,7 +286,7 @@ float wave_coord = 0;
 void waves(Renderer *renderer)
 {
   wave_coord += 0.1;
-  for(uint8_t i = 0; i < 98; i++){
+  for(uint8_t i = 0; i < 45; i++){
     float y = sin(i * 0.1 + wave_coord) * 0.5 + 0.5;
     renderer->setPixel(i, 0, HslColor(y, 1.0, 0.5));
   }

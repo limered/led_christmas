@@ -32,7 +32,7 @@ struct Coord
 
 class Renderer
 {
-  static const uint16_t pixelCount = 200;
+  static const uint16_t pixelCount = 45;
   static const uint8_t pixelPin = 2;
   uint8_t saveLightValue = 7;
   float savePercent = 0.5;
